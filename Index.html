@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Pergola — Mémoire de Bâtiment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Avenir+Next:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --dark: #1a1a18;
+    --mid: #4a4a42;
+    --light-mid: #8a8a7e;
+    --accent: #c8b89a;
+    --border: rgba(26,26,24,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--dark);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAVBAR ─── */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+  }
+
+  .navbar-left, .navbar-right {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: var(--dark);
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .navbar-left:hover, .navbar-right:hover {
+    border-bottom-color: var(--dark);
+    opacity: 0.6;
+  }
+
+  .navbar-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .navbar-logo svg {
+    width: 56px;
+    height: 40px;
+  }
+
+  /* ─── PAGE: GARDE ─── */
+  #page-garde {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--warm-white);
+  }
+
+  .hero {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(26,26,24,0.55) 0%, rgba(26,26,24,0.1) 55%, transparent 80%),
+      url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80') center/cover no-repeat;
+    transform: scale(1.04);
+    transition: transform 8s ease;
+  }
+
+  .hero:hover .hero-bg { transform: scale(1); }
+
+  /* Placeholder tiled pattern if no real image */
+  .hero-texture {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(200,184,154,0.04) 2px, rgba(200,184,154,0.04) 4px);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 64px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 520px;
+  }
+
+  .hero-location {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 7vw, 84px);
+    font-weight: 300;
+    color: var(--warm-white);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+
+  .hero-subtitle {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.6);
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  .hero-btn {
+    display: inline-block;
+    border: 1px solid rgba(245,240,232,0.5);
+    color: var(--warm-white);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    background: transparent;
+    text-decoration: none;
+  }
+
+  .hero-btn:hover {
+    background: rgba(245,240,232,0.12);
+    border-color: rgba(245,240,232,0.9);
+  }
+
+  /* ─── PAGE: CATEGORIES (Page 3) ─── */
+  #page-categories {
+    background: var(--cream);
+    padding-top: 64px;
+    min-height: 100vh;
+  }
+
+  .section-header {
+    padding: 56px 64px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--dark);
+    font-style: italic;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    background: var(--cream);
+    margin: 0;
+    padding: 40px 64px 56px;
+  }
+
+  .card {
+    background: var(--warm-white);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+    border: 1px solid rgba(26,26,24,0.18);
+    box-shadow: 0 2px 12px rgba(26,26,24,0.06);
+  }
+
+  .card:hover {
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(26,26,24,0.13);
+    transform: translateY(-3px);
+  }
+
+  .card-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-image-inner {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease;
+  }
+
+  .card:hover .card-image-inner { transform: scale(1.04); }
+
+  .card-image-1 .card-image-inner {
+    background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80');
+    background-color: #d4c9b5;
+  }
+  .card-image-2 .card-image-inner {
+    background-image: url('https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=600&q=80');
+    background-color: #c8b89a;
+  }
+  .card-image-3 .card-image-inner {
+    background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80');
+    background-color: #b8a88a;
+  }
+
+  /* Overlay pattern for cards */
+  .card-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,26,24,0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .card-body {
+    padding: 24px 28px 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+
+  .card-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--light-mid);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 28px;
+    right: 28px;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateX(-6px);
+  }
+
+  .card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ─── PAGE: PLANS (Pages 1 & 2) ─── */
+  #page-plans {
+    background: var(--warm-white);
+    padding-top: 64px;
+    min-height: 100vh;
+  }
+
+  .floor-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0 64px;
+  }
+
+  .floor-tab {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding: 20px 32px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--light-mid);
+    transition: all 0.2s;
+    margin-bottom: -1px;
+  }
+
+  .floor-tab.active {
+    color: var(--dark);
+    border-bottom-color: var(--dark);
+  }
+
+  .floor-tab:hover:not(.active) { color: var(--mid); }
+
+  .plan-wrapper {
+    display: none;
+    padding: 48px 64px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .plan-wrapper.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .plan-container {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--cream);
+    overflow: hidden;
+  }
+
+  .plan-header {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .plan-floor-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--dark);
+  }
+
+  .plan-legend {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    font-weight: 300;
+  }
+
+  .plan-canvas {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+    background:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-color: var(--cream);
+  }
+
+  /* Real plan images */
+  .plan-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--warm-white);
+  }
+
+  /* Hotspot zones */
+  .hotspot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+  }
+
+  .hotspot-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--dark);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .hotspot-dot {
+    position: absolute;
+    inset: 8px;
+    background: var(--dark);
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .hotspot:hover .hotspot-dot { transform: scale(1.3); }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.3; }
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    background: var(--dark);
+    color: var(--warm-white);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 10px 16px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    z-index: 10;
+    transform: translateY(-100%) translateX(-50%);
+    margin-top: -12px;
+  }
+
+  .tooltip.visible { opacity: 1; }
+
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom: none;
+    border-top-color: var(--dark);
+  }
+
+  /* Nav arrows */
+  .plan-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    background: rgba(245,240,232,0.9);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .plan-nav:hover {
+    background: var(--warm-white);
+    border-color: var(--dark);
+  }
+
+  .plan-nav-left { left: 16px; }
+  .plan-nav-right { right: 16px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    color: rgba(245,240,232,0.4);
+    padding: 40px 64px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* ─── SECTION SEPARATOR ─── */
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 64px;
+  }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,24,0.85);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--warm-white);
+    max-width: 560px;
+    width: 90%;
+    padding: 48px;
+    position: relative;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--mid);
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: var(--dark); color: var(--warm-white); }
+
+  .modal-zone {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    margin-bottom: 8px;
+  }
+
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 300;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .modal-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .modal-photo {
+    aspect-ratio: 4/3;
+    background: var(--accent);
+    overflow: hidden;
+  }
+
+  .modal-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .modal-desc {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .navbar { padding: 0 20px; }
+    .hero-content { padding: 64px 24px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .floor-nav { padding: 0 20px; }
+    .plan-wrapper { padding: 24px 20px; }
+    .section-header { padding: 40px 24px 32px; }
+    .section-divider { margin: 0 24px; }
+    footer { padding: 32px 24px; flex-direction: column; gap: 12px; }
+  }
+  /* ─── GALLERY LIGHTBOX ─── */
+  .gallery-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,18,14,0.97);
+    z-index: 300;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.25s ease;
+  }
+
+  .gallery-overlay.open { display: flex; }
+
+  .gallery-inner {
+    width: 100%;
+    max-width: 1100px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 32px 20px;
+  }
+
+  /* Header */
+  .gallery-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 20px;
+    border-bottom: 1px solid rgba(245,240,232,0.1);
+    flex-shrink: 0;
+  }
+
+  .gallery-title-block {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  .gallery-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.9);
+    font-weight: 300;
+  }
+
+  .gallery-counter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: rgba(245,240,232,0.4);
+    font-style: italic;
+  }
+
+  .gallery-close {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(245,240,232,0.2);
+    color: rgba(245,240,232,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .gallery-close:hover {
+    background: rgba(245,240,232,0.1);
+    color: var(--warm-white);
+  }
+
+  /* Stage */
+  .gallery-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 0;
+    padding: 20px 0 16px;
+  }
+
+  .gallery-img-wrap {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .gallery-main-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    border: 1px solid rgba(245,240,232,0.06);
+  }
+
+  .gallery-main-img.transitioning {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  /* Arrows */
+  .gallery-arrow {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(245,240,232,0.2);
+    background: transparent;
+    color: rgba(245,240,232,0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .gallery-arrow:hover {
+    background: rgba(245,240,232,0.08);
+    color: var(--warm-white);
+    border-color: rgba(245,240,232,0.5);
+  }
+
+  /* Thumbnails */
+  .gallery-thumbs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 8px;
+    flex-shrink: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(245,240,232,0.2) transparent;
+  }
+
+  .gallery-thumbs::-webkit-scrollbar { height: 3px; }
+  .gallery-thumbs::-webkit-scrollbar-thumb { background: rgba(245,240,232,0.2); }
+
+  .g-thumb {
+    width: 72px;
+    height: 52px;
+    flex-shrink: 0;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.45;
+    border: 1px solid transparent;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+
+  .g-thumb:hover { opacity: 0.75; }
+
+  .g-thumb.active {
+    opacity: 1;
+    border-color: rgba(245,240,232,0.7);
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="navbar-left" href="#page-plans">Plans Techniques</a>
+    <div class="navbar-logo">
+      <svg viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="28,4 52,18 52,38 4,38 4,18" fill="none" stroke="#1a1a18" stroke-width="1.2"/>
+        <polygon points="28,2 54,18 2,18" fill="none" stroke="#1a1a18" stroke-width="1.2"/>
+        <rect x="20" y="26" width="16" height="12" fill="none" stroke="#1a1a18" stroke-width="1"/>
+        <line x1="4" y1="18" x2="52" y2="18" stroke="#1a1a18" stroke-width="0.8"/>
+        <line x1="28" y1="2" x2="28" y2="18" stroke="#1a1a18" stroke-width="1"/>
+        <rect x="8" y="22" width="9" height="8" fill="none" stroke="#1a1a18" stroke-width="0.8"/>
+        <rect x="39" y="22" width="9" height="8" fill="none" stroke="#1a1a18" stroke-width="0.8"/>
+      </svg>
+    </div>
+  </div>
+  <a class="navbar-right" href="#page-categories">Photographies</a>
+</nav>
+
+<!-- PAGE DE GARDE -->
+<section id="page-garde">
+  <div class="hero" onclick="document.getElementById('page-plans').scrollIntoView({behavior:'smooth'})">
+    <div class="hero-bg"></div>
+    <div class="hero-texture"></div>
+    <div class="hero-content">
+      <p class="hero-location">Lamotte-Beuvron (41)</p>
+      <h1 class="hero-title">La<br>Pergola</h1>
+      <p class="hero-subtitle">Ancien Hôtel-Pizzeria-Grill</p>
+      <a class="hero-btn" href="#page-plans">Découvrir le bâtiment</a>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE PLANS (Pages 1 & 2) — first after garde -->
+<section id="page-plans" style="padding-top:64px; background:var(--warm-white);">
+  <div class="section-header" style="background:var(--warm-white); padding-top: 80px;">
+    <p class="section-label">Relevé</p>
+    <h2 class="section-title">Plans techniques</h2>
+  </div>
+
+  <div class="floor-nav">
+    <div class="floor-tab active" onclick="showFloor('rdc', this)">Plan RDC</div>
+    <div class="floor-tab" onclick="showFloor('poutres', this)">RDC — Poutres</div>
+    <div class="floor-tab" onclick="showFloor('etage', this)">Plan 1er Étage</div>
+  </div>
+
+  <!-- RDC -->
+  <div class="plan-wrapper active" id="plan-rdc">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Rez-de-chaussée</span>
+        <span class="plan-legend">Cliquer sur les zones pour voir les photos</span>
+      </div>
+      <div class="plan-canvas" id="canvas-rdc">
+        <img src="PLANS/RDC.png" class="plan-image" alt="Plan RDC">
+        <!-- Salle restauration N°1 (haut centre) -->
+        <div class="hotspot" style="left:52%;top:28%" onclick="openZone('Salle de restauration N°1','Grande salle de restauration — état des revêtements de sol et plafond.')" title="Salle restauration N°1">
+          <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Salle restauration N°2 (gauche haut) -->
+        <div class="hotspot" style="left:13%;top:35%" onclick="openZone('Salle de restauration N°2','Salle secondaire — menuiseries et finitions intérieures.')" title="Salle restauration N°2">
+          <div class="hotspot-ring" style="animation-delay:0.5s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Cuisine (gauche milieu) -->
+        <div class="hotspot" style="left:18%;top:52%" onclick="openZone('Cuisine','Espace de préparation — équipements et revêtements.')" title="Cuisine">
+          <div class="hotspot-ring" style="animation-delay:0.8s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Bar (gauche milieu-bas) -->
+        <div class="hotspot" style="left:18%;top:67%" onclick="openZone('Bar','Comptoir bar — mobilier fixe et état des lieux.')" title="Bar">
+          <div class="hotspot-ring" style="animation-delay:1.2s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Cour intérieure (centre) -->
+        <div class="hotspot" style="left:55%;top:55%" onclick="openZone('Cour intérieure','Cour intérieure 250m² — état des revêtements extérieurs.')" title="Cour intérieure">
+          <div class="hotspot-ring" style="animation-delay:1.5s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Aile droite chambres -->
+        <div class="hotspot" style="left:88%;top:40%" onclick="openZone('Aile droite','Chambres côté Est — état des menuiseries et revêtements.')" title="Aile droite">
+          <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Aile sud chambres -->
+        <div class="hotspot" style="left:60%;top:80%" onclick="openZone('Aile sud','Chambres côté Sud — état général des locaux.')" title="Aile sud">
+          <div class="hotspot-ring" style="animation-delay:1.8s"></div><div class="hotspot-dot"></div>
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('rdc', document.querySelectorAll('.floor-tab')[0])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('poutres', document.querySelectorAll('.floor-tab')[1])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RDC POUTRES -->
+  <div class="plan-wrapper" id="plan-poutres">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Rez-de-chaussée — Poutres</span>
+        <span class="plan-legend">Cliquer sur les zones pour voir les photos</span>
+      </div>
+      <div class="plan-canvas" id="canvas-poutres">
+        <img src="PLANS/RDC - POUTRES.png" class="plan-image" alt="Plan RDC Poutres">
+        <!-- Salle restauration N°1 -->
+        <div class="hotspot" style="left:52%;top:28%" onclick="openZone('Salle restauration N°1 — Poutres','Structure de charpente et poutres apparentes — grande salle.')" title="Salle restauration N°1">
+          <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Salle restauration N°2 -->
+        <div class="hotspot" style="left:13%;top:35%" onclick="openZone('Salle restauration N°2 — Poutres','Détail poutres et charpente — salle secondaire.')" title="Salle restauration N°2">
+          <div class="hotspot-ring" style="animation-delay:0.5s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Cuisine -->
+        <div class="hotspot" style="left:18%;top:52%" onclick="openZone('Cuisine — Poutres','Poutres et structure de toiture en cuisine.')" title="Cuisine">
+          <div class="hotspot-ring" style="animation-delay:0.8s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Bar -->
+        <div class="hotspot" style="left:18%;top:67%" onclick="openZone('Bar — Poutres','Éléments de charpente au-dessus du bar.')" title="Bar">
+          <div class="hotspot-ring" style="animation-delay:1.2s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Chambres aile droite -->
+        <div class="hotspot" style="left:88%;top:40%" onclick="openZone('Aile droite — Poutres','Structure de charpente des chambres côté Est.')" title="Aile droite">
+          <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Chambres aile sud -->
+        <div class="hotspot" style="left:60%;top:80%" onclick="openZone('Aile sud — Poutres','Poutres et charpente des chambres côté Sud.')" title="Aile sud">
+          <div class="hotspot-ring" style="animation-delay:1.5s"></div><div class="hotspot-dot"></div>
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('rdc', document.querySelectorAll('.floor-tab')[0])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('etage', document.querySelectorAll('.floor-tab')[2])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1ER ÉTAGE -->
+  <div class="plan-wrapper" id="plan-etage">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Premier étage</span>
+        <span class="plan-legend">Cliquer sur les zones pour voir les photos</span>
+      </div>
+      <div class="plan-canvas" id="canvas-etage">
+        <img src="PLANS/R+1.png" class="plan-image" alt="Plan R+1">
+        <!-- Pièce 1 (gauche haut) -->
+        <div class="hotspot" style="left:14%;top:38%" onclick="openZone('Pièce 1','Pièce principale — état des revêtements et menuiseries.')" title="Pièce 1">
+          <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Pièce 2 (gauche milieu) -->
+        <div class="hotspot" style="left:22%;top:57%" onclick="openZone('Pièce 2','Seconde pièce — état des planchers et plafonds.')" title="Pièce 2">
+          <div class="hotspot-ring" style="animation-delay:0.6s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Chambre pincée (centre) -->
+        <div class="hotspot" style="left:32%;top:32%" onclick="openZone('Chambre pincée','Chambre mansardée — charpente et combles.')" title="Chambre pincée">
+          <div class="hotspot-ring" style="animation-delay:1s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- WC / Couloir (gauche bas) -->
+        <div class="hotspot" style="left:15%;top:72%" onclick="openZone('WC & Couloir','Sanitaires et circulation — état des finitions.')" title="WC & Couloir">
+          <div class="hotspot-ring" style="animation-delay:1.4s"></div><div class="hotspot-dot"></div>
+        </div>
+        <!-- Porche (bas) -->
+        <div class="hotspot" style="left:28%;top:83%" onclick="openZone('Porche','Espace de porche — couverture et revêtements extérieurs.')" title="Porche">
+          <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('poutres', document.querySelectorAll('.floor-tab')[1])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('etage', document.querySelectorAll('.floor-tab')[2])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE CATÉGORIES (Page 3) — now second -->
+<section id="page-categories" style="background:var(--cream);">
+  <div class="section-header" style="background:var(--cream); padding-top: 72px; border-top: 1px solid var(--border);">
+    <p class="section-label">Documentation</p>
+    <h2 class="section-title">État des lieux</h2>
+  </div>
+
+  <div class="cards-grid">
+    <!-- FAÇADES ET COUPES -->
+    <div class="card" onclick="openGallery()">
+      <div class="card-image card-image-1">
+        <div class="card-image-inner" style="background-image:none; background-color:#cfc3af; display:flex;align-items:center;justify-content:center;">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none" opacity="0.5">
+            <!-- Façade building silhouette -->
+            <rect x="8" y="40" width="64" height="30" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
+            <polygon points="8,40 40,14 72,40" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
+            <rect x="18" y="52" width="12" height="18" stroke="#4a4a42" stroke-width="1" fill="none"/>
+            <rect x="34" y="52" width="12" height="12" stroke="#4a4a42" stroke-width="1" fill="none"/>
+            <rect x="50" y="52" width="12" height="18" stroke="#4a4a42" stroke-width="1" fill="none"/>
+            <!-- Coupe line -->
+            <line x1="4" y1="37" x2="76" y2="37" stroke="#4a4a42" stroke-width="0.8" stroke-dasharray="3,2"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Façades & Coupes</p>
+        <p class="card-desc">Élévations et coupes architecturales du bâtiment</p>
+      </div>
+      <div class="card-arrow">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3" stroke="#1a1a18" stroke-width="1" fill="none"/></svg>
+      </div>
+    </div>
+
+    <!-- PHOTOS EDL -->
+    <div class="card" onclick="openModal('edl')">
+      <div class="card-image card-image-2">
+        <div class="card-image-inner" style="background-image:none; background-color:#b8a88a; display:flex;align-items:center;justify-content:center;">
+          <svg width="80" height="60" viewBox="0 0 80 60" fill="none" opacity="0.5">
+            <rect x="5" y="8" width="70" height="44" rx="2" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
+            <circle cx="40" cy="30" r="12" stroke="#4a4a42" stroke-width="1.2" fill="none"/>
+            <circle cx="40" cy="30" r="5" fill="#4a4a42" opacity="0.4"/>
+            <rect x="28" y="5" width="24" height="6" rx="1" fill="#4a4a42" opacity="0.3"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Photos EDL</p>
+        <p class="card-desc">État des lieux photographique par zone</p>
+      </div>
+      <div class="card-arrow">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3" stroke="#1a1a18" stroke-width="1" fill="none"/></svg>
+      </div>
+    </div>
+
+    <!-- PHOTOS SENSIBLES -->
+    <div class="card" onclick="openModal('sensibles')">
+      <div class="card-image card-image-3">
+        <div class="card-image-inner" style="background-image:none; background-color:#a89880; display:flex;align-items:center;justify-content:center;">
+          <svg width="70" height="70" viewBox="0 0 70 70" fill="none" opacity="0.5">
+            <circle cx="35" cy="35" r="28" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
+            <circle cx="35" cy="35" r="16" stroke="#4a4a42" stroke-width="1" fill="none"/>
+            <line x1="7" y1="35" x2="63" y2="35" stroke="#4a4a42" stroke-width="0.8"/>
+            <line x1="35" y1="7" x2="35" y2="63" stroke="#4a4a42" stroke-width="0.8"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Photos Sensibles</p>
+        <p class="card-desc">Détails architecturaux & éléments remarquables</p>
+      </div>
+      <div class="card-arrow">
+        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3" stroke="#1a1a18" stroke-width="1" fill="none"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>La Pergola — Lamotte-Beuvron (41)</span>
+  <span>Mémoire de Bâtiment · 2024</span>
+</footer>
+
+<!-- MODAL ZONE -->
+<div class="modal-overlay" id="modal-zone" onclick="closeModal('modal-zone')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('modal-zone')">✕</div>
+    <p class="modal-zone" id="modal-zone-label">Zone</p>
+    <h3 class="modal-title" id="modal-zone-title">Titre</h3>
+    <div class="modal-photos">
+      <div class="modal-photo" style="background:#d4c9b5; display:flex;align-items:center;justify-content:center;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" opacity="0.4">
+          <rect x="4" y="8" width="32" height="24" rx="1" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
+          <circle cx="20" cy="20" r="6" stroke="#4a4a42" stroke-width="1.2" fill="none"/>
+          <rect x="14" y="5" width="12" height="5" rx="0.5" fill="#4a4a42" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="modal-photo" style="background:#c8b89a; display:flex;align-items:center;justify-content:center;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" opacity="0.4">
+          <rect x="4" y="8" width="32" height="24" rx="1" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
+          <circle cx="20" cy="20" r="6" stroke="#4a4a42" stroke-width="1.2" fill="none"/>
+          <rect x="14" y="5" width="12" height="5" rx="0.5" fill="#4a4a42" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+    <p class="modal-desc" id="modal-zone-desc"></p>
+  </div>
+</div>
+
+<!-- MODAL CATEGORIES -->
+<div class="modal-overlay" id="modal-cat" onclick="closeModal('modal-cat')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('modal-cat')">✕</div>
+    <p class="modal-zone">Photographies</p>
+    <h3 class="modal-title" id="modal-cat-title">Titre</h3>
+    <p class="modal-desc" id="modal-cat-desc"></p>
+  </div>
+</div>
+
+<!-- GALLERY LIGHTBOX — FAÇADES & COUPES -->
+<div class="gallery-overlay" id="gallery-overlay" onclick="handleGalleryClick(event)">
+  <div class="gallery-inner">
+
+    <!-- Header -->
+    <div class="gallery-header">
+      <div class="gallery-title-block">
+        <p class="gallery-label">Façades & Coupes</p>
+        <p class="gallery-counter"><span id="g-current">1</span> / 12</p>
+      </div>
+      <div class="gallery-close" onclick="closeGallery()">✕</div>
+    </div>
+
+    <!-- Main image -->
+    <div class="gallery-stage">
+      <button class="gallery-arrow gallery-arrow-left" onclick="galleryMove(-1)">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M9 2L5 7l4 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      </button>
+      <div class="gallery-img-wrap">
+        <img id="g-main-img" src="" alt="" class="gallery-main-img">
+      </div>
+      <button class="gallery-arrow gallery-arrow-right" onclick="galleryMove(1)">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M5 2l4 5-4 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Thumbnails strip -->
+    <div class="gallery-thumbs" id="g-thumbs"></div>
+
+  </div>
+</div>
+
+<script>
+
+  // ─── GALLERY ───
+  const GALLERY_TOTAL = 12;
+  const GALLERY_PATH  = 'FAÇADES ET COUPES/';
+  let gIndex = 0;
+
+  function buildThumbs() {
+    const strip = document.getElementById('g-thumbs');
+    strip.innerHTML = '';
+    for (let i = 1; i <= GALLERY_TOTAL; i++) {
+      const img = document.createElement('img');
+      img.src = GALLERY_PATH + i + '.png';
+      img.alt = 'Façade ' + i;
+      img.className = 'g-thumb' + (i === 1 ? ' active' : '');
+      img.dataset.index = i - 1;
+      img.onclick = () => goTo(i - 1);
+      strip.appendChild(img);
+    }
+  }
+
+  function openGallery() {
+    gIndex = 0;
+    buildThumbs();
+    renderMain();
+    document.getElementById('gallery-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGallery() {
+    document.getElementById('gallery-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function renderMain(transition = false) {
+    const img = document.getElementById('g-main-img');
+    document.getElementById('g-current').textContent = gIndex + 1;
+
+    // Update active thumb
+    document.querySelectorAll('.g-thumb').forEach((t, i) => {
+      t.classList.toggle('active', i === gIndex);
+    });
+
+    // Scroll thumb into view
+    const activeThumb = document.querySelector('.g-thumb.active');
+    if (activeThumb) activeThumb.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+
+    if (transition) {
+      img.classList.add('transitioning');
+      setTimeout(() => {
+        img.src = GALLERY_PATH + (gIndex + 1) + '.png';
+        img.classList.remove('transitioning');
+      }, 180);
+    } else {
+      img.src = GALLERY_PATH + (gIndex + 1) + '.png';
+    }
+  }
+
+  function goTo(index) {
+    gIndex = (index + GALLERY_TOTAL) % GALLERY_TOTAL;
+    renderMain(true);
+  }
+
+  function galleryMove(dir) { goTo(gIndex + dir); }
+
+  function handleGalleryClick(e) {
+    if (e.target === document.getElementById('gallery-overlay')) closeGallery();
+  }
+
+  // Keyboard navigation for gallery
+  document.addEventListener('keydown', e => {
+    const overlay = document.getElementById('gallery-overlay');
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'ArrowRight') galleryMove(1);
+    if (e.key === 'ArrowLeft')  galleryMove(-1);
+    if (e.key === 'Escape')     closeGallery();
+  });
+
+
+  function showFloor(floor, tab) {
+    document.querySelectorAll('.floor-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.plan-wrapper').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('plan-' + floor).classList.add('active');
+  }
+
+  // Zone modal
+  function openZone(title, desc) {
+    document.getElementById('modal-zone-label').textContent = 'Zone';
+    document.getElementById('modal-zone-title').textContent = title;
+    document.getElementById('modal-zone-desc').textContent = desc;
+    document.getElementById('modal-zone').classList.add('open');
+  }
+
+  // Category modals
+  const catData = {
+    edl: {
+      title: 'Photos EDL',
+      desc: 'Photographies d\'état des lieux réalisées par zone, documentant l\'état actuel du bâtiment. Les images couvrent l\'ensemble des espaces intérieurs et extérieurs selon un protocole systématique.'
+    },
+    sensibles: {
+      title: 'Photos Sensibles',
+      desc: 'Documentation photographique des éléments architecturaux remarquables : détails de charpente, menuiseries d\'origine, revêtements caractéristiques et éléments décoratifs présentant un intérêt patrimonial.'
+    }
+  };
+
+  function openModal(type) {
+    const data = catData[type];
+    document.getElementById('modal-cat-title').textContent = data.title;
+    document.getElementById('modal-cat-desc').textContent = data.desc;
+    document.getElementById('modal-cat').classList.add('open');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+
+  // Escape closes modals (gallery has its own handler above)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+  });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
