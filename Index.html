@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Pergola — Mémoire de Bâtiment</title>
+<title>La Pergola — Projet de diplôme</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Avenir+Next:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
@@ -91,7 +91,7 @@
     inset: 0;
     background:
       linear-gradient(to right, rgba(26,26,24,0.55) 0%, rgba(26,26,24,0.1) 55%, transparent 80%),
-      url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80') center/cover no-repeat;
+      url('page de garde.png') center/cover no-repeat;
     transform: scale(1.04);
     transition: transform 8s ease;
   }
@@ -311,24 +311,56 @@
     min-height: 100vh;
   }
 
+  .floor-nav-wrap {
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm-white);
+  }
+
   .floor-nav {
     display: flex;
     gap: 0;
-    border-bottom: 1px solid var(--border);
-    padding: 0 64px;
+    padding: 0 48px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
   }
+
+  .floor-nav::-webkit-scrollbar { display: none; }
+
+  .floor-nav-arrow {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, var(--warm-white) 60%, transparent);
+    cursor: pointer;
+    z-index: 5;
+    border: none;
+    color: var(--mid);
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .floor-nav-arrow:hover { color: var(--dark); }
+  .floor-nav-arrow.nav-left { left: 0; background: linear-gradient(to right, var(--warm-white) 60%, transparent); }
+  .floor-nav-arrow.nav-right { right: 0; background: linear-gradient(to left, var(--warm-white) 60%, transparent); }
 
   .floor-tab {
     font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     font-weight: 300;
-    padding: 20px 32px 18px;
+    padding: 20px 28px 18px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     color: var(--light-mid);
     transition: all 0.2s;
     margin-bottom: -1px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .floor-tab.active {
@@ -337,6 +369,72 @@
   }
 
   .floor-tab:hover:not(.active) { color: var(--mid); }
+
+  /* Groupe déroulant Façades & Coupes */
+  .floor-tab-group {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .floor-tab-group-btn {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding: 20px 28px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--light-mid);
+    transition: all 0.2s;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 1px solid var(--border);
+    margin-left: 8px;
+    user-select: none;
+  }
+
+  .floor-tab-group-btn:hover { color: var(--mid); }
+  .floor-tab-group-btn.has-active { color: var(--dark); border-bottom-color: var(--dark); }
+
+  .floor-tab-group-btn .arrow-icon {
+    font-size: 8px;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+
+  .floor-tab-group-btn.open .arrow-icon { transform: rotate(180deg); }
+
+  .floor-tab-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-top: none;
+    min-width: 180px;
+    z-index: 50;
+    box-shadow: 0 8px 24px rgba(26,26,24,0.08);
+  }
+
+  .floor-tab-group.open .floor-tab-dropdown { display: block; }
+
+  .floor-tab-dropdown .floor-tab {
+    display: block;
+    padding: 14px 24px;
+    border-bottom: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+    width: 100%;
+  }
+
+  .floor-tab-dropdown .floor-tab:first-child { border-top: none; }
+  .floor-tab-dropdown .floor-tab.active { background: var(--cream); }
 
   .plan-wrapper {
     display: none;
@@ -384,24 +482,42 @@
 
   .plan-canvas {
     position: relative;
-    height: 500px;
-    overflow: hidden;
-    background:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 40px 40px;
+    width: 100%;
     background-color: var(--cream);
+    overflow: hidden;
+    /* height driven by image aspect ratio */
+  }
+
+  /* Wrapper that matches exactly the rendered image size */
+  .plan-img-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+    line-height: 0;
   }
 
   /* Real plan images */
   .plan-image {
     width: 100%;
-    height: 100%;
+    height: auto;
+    display: block;
+    object-fit: fill;
+    pointer-events: none;
+  }
+
+  /* Images sensibles ajustées à l'écran */
+  .plan-image.sensible-fit {
+    width: auto;
+    max-width: 100%;
+    height: calc(100vh - 180px);
     object-fit: contain;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: var(--warm-white);
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Nav arrows — positioned over the canvas */
+  .plan-canvas {
+    position: relative;
   }
 
   /* Hotspot zones */
@@ -411,6 +527,8 @@
     height: 28px;
     cursor: pointer;
     transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: all;
   }
 
   .hotspot-ring {
@@ -594,6 +712,75 @@
     font-weight: 300;
   }
 
+  /* Zone modal galerie */
+  .modal-zone-box {
+    max-width: 720px;
+    width: 95%;
+    padding: 40px;
+  }
+
+  .mz-main-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .mz-main-img-wrap {
+    flex: 1;
+    aspect-ratio: 4/3;
+    background: var(--cream);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mz-main-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mz-arrow {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--mid);
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mz-arrow:hover { background: var(--dark); color: var(--warm-white); border-color: var(--dark); }
+
+  .mz-thumbs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .mz-thumb {
+    width: 56px;
+    height: 42px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.5;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .mz-thumb.active, .mz-thumb:hover {
+    opacity: 1;
+    border-color: var(--dark);
+  }
+
   /* Responsive */
   @media (max-width: 768px) {
     .navbar { padding: 0 20px; }
@@ -773,18 +960,10 @@
 <nav class="navbar">
   <a class="navbar-left" href="#page-plans">Plans Techniques</a>
     <div class="navbar-logo">
-      <svg viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="28,4 52,18 52,38 4,38 4,18" fill="none" stroke="#1a1a18" stroke-width="1.2"/>
-        <polygon points="28,2 54,18 2,18" fill="none" stroke="#1a1a18" stroke-width="1.2"/>
-        <rect x="20" y="26" width="16" height="12" fill="none" stroke="#1a1a18" stroke-width="1"/>
-        <line x1="4" y1="18" x2="52" y2="18" stroke="#1a1a18" stroke-width="0.8"/>
-        <line x1="28" y1="2" x2="28" y2="18" stroke="#1a1a18" stroke-width="1"/>
-        <rect x="8" y="22" width="9" height="8" fill="none" stroke="#1a1a18" stroke-width="0.8"/>
-        <rect x="39" y="22" width="9" height="8" fill="none" stroke="#1a1a18" stroke-width="0.8"/>
-      </svg>
+      <img src="Logo pergola.png" alt="La Pergola" style="height:40px; width:auto; display:block;">
     </div>
   </div>
-  <a class="navbar-right" href="#page-categories">Photographies</a>
+  <a class="navbar-right" href="#page-categories">Photos Sensibles</a>
 </nav>
 
 <!-- PAGE DE GARDE -->
@@ -804,14 +983,30 @@
 <!-- PAGE PLANS (Pages 1 & 2) — first after garde -->
 <section id="page-plans" style="padding-top:64px; background:var(--warm-white);">
   <div class="section-header" style="background:var(--warm-white); padding-top: 80px;">
-    <p class="section-label">Relevé</p>
+    <p class="section-label"></p>
     <h2 class="section-title">Plans techniques</h2>
   </div>
 
-  <div class="floor-nav">
-    <div class="floor-tab active" onclick="showFloor('rdc', this)">Plan RDC</div>
-    <div class="floor-tab" onclick="showFloor('poutres', this)">RDC — Poutres</div>
-    <div class="floor-tab" onclick="showFloor('etage', this)">Plan 1er Étage</div>
+  <div class="floor-nav-wrap">
+    <button class="floor-nav-arrow nav-left" onclick="scrollNav(-200)">&#8592;</button>
+    <div class="floor-nav" id="floor-nav">
+      <div class="floor-tab active" onclick="showFloor('rdc', this)">Plan RDC</div>
+      <div class="floor-tab" onclick="showFloor('poutres', this)">RDC — Poutres</div>
+      <div class="floor-tab" onclick="showFloor('etage', this)">Plan Étage</div>
+      <div class="floor-tab" onclick="showFloor('fc1', this)">Planche 1</div>
+      <div class="floor-tab" onclick="showFloor('fc2', this)">Planche 2</div>
+      <div class="floor-tab" onclick="showFloor('fc3', this)">Planche 3</div>
+      <div class="floor-tab" onclick="showFloor('fc4', this)">Planche 4</div>
+      <div class="floor-tab" onclick="showFloor('fc5', this)">Planche 5</div>
+      <div class="floor-tab" onclick="showFloor('fc6', this)">Planche 6</div>
+      <div class="floor-tab" onclick="showFloor('fc7', this)">Planche 7</div>
+      <div class="floor-tab" onclick="showFloor('fc8', this)">Planche 8</div>
+      <div class="floor-tab" onclick="showFloor('fc9', this)">Planche 9</div>
+      <div class="floor-tab" onclick="showFloor('fc10', this)">Planche 10</div>
+      <div class="floor-tab" onclick="showFloor('fc11', this)">Planche 11</div>
+      <div class="floor-tab" onclick="showFloor('fc12', this)">Planche 12</div>
+    </div>
+    <button class="floor-nav-arrow nav-right" onclick="scrollNav(200)">&#8594;</button>
   </div>
 
   <!-- RDC -->
@@ -822,35 +1017,87 @@
         <span class="plan-legend">Cliquer sur les zones pour voir les photos</span>
       </div>
       <div class="plan-canvas" id="canvas-rdc">
-        <img src="PLANS/RDC.png" class="plan-image" alt="Plan RDC">
-        <!-- Salle restauration N°1 (haut centre) -->
-        <div class="hotspot" style="left:52%;top:28%" onclick="openZone('Salle de restauration N°1','Grande salle de restauration — état des revêtements de sol et plafond.')" title="Salle restauration N°1">
-          <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Salle restauration N°2 (gauche haut) -->
-        <div class="hotspot" style="left:13%;top:35%" onclick="openZone('Salle de restauration N°2','Salle secondaire — menuiseries et finitions intérieures.')" title="Salle restauration N°2">
-          <div class="hotspot-ring" style="animation-delay:0.5s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Cuisine (gauche milieu) -->
-        <div class="hotspot" style="left:18%;top:52%" onclick="openZone('Cuisine','Espace de préparation — équipements et revêtements.')" title="Cuisine">
-          <div class="hotspot-ring" style="animation-delay:0.8s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Bar (gauche milieu-bas) -->
-        <div class="hotspot" style="left:18%;top:67%" onclick="openZone('Bar','Comptoir bar — mobilier fixe et état des lieux.')" title="Bar">
-          <div class="hotspot-ring" style="animation-delay:1.2s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Cour intérieure (centre) -->
-        <div class="hotspot" style="left:55%;top:55%" onclick="openZone('Cour intérieure','Cour intérieure 250m² — état des revêtements extérieurs.')" title="Cour intérieure">
-          <div class="hotspot-ring" style="animation-delay:1.5s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Aile droite chambres -->
-        <div class="hotspot" style="left:88%;top:40%" onclick="openZone('Aile droite','Chambres côté Est — état des menuiseries et revêtements.')" title="Aile droite">
-          <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Aile sud chambres -->
-        <div class="hotspot" style="left:60%;top:80%" onclick="openZone('Aile sud','Chambres côté Sud — état général des locaux.')" title="Aile sud">
-          <div class="hotspot-ring" style="animation-delay:1.8s"></div><div class="hotspot-dot"></div>
-        </div>
+        <div class="plan-img-wrapper">
+          <img src="PLANS/RDC.png" class="plan-image" alt="Plan RDC">
+
+          <!-- Salle de restauration N°1 -->
+          <div class="hotspot" style="left:29%;top:30%" onclick="openZone('Salle de restauration N°1','Grande salle de restauration — état des revêtements de sol et plafond.')" title="Salle restauration N°1">
+            <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Salle de restauration N°2 -->
+          <div class="hotspot" style="left:13%;top:42%" onclick="openZone('Salle de restauration N°2','Salle secondaire — menuiseries et finitions intérieures.')" title="Salle restauration N°2">
+            <div class="hotspot-ring" style="animation-delay:0.2s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Escalier -->
+          <div class="hotspot" style="left:21%;top:29%" onclick="openZone('Escalier','Escalier entre les deux salles de restauration — état des marches et rambardes.')" title="Escalier">
+            <div class="hotspot-ring" style="animation-delay:0.4s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Cuisine -->
+          <div class="hotspot" style="left:18%;top:46%" onclick="openZone('Cuisine','Espace de préparation — équipements et revêtements.')" title="Cuisine">
+            <div class="hotspot-ring" style="animation-delay:0.6s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Bar -->
+          <div class="hotspot" style="left:17%;top:57%" onclick="openZone('Bar','Comptoir bar — mobilier fixe et état des lieux.')" title="Bar">
+            <div class="hotspot-ring" style="animation-delay:0.8s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Couloir -->
+          <div class="hotspot" style="left:23%;top:57%" onclick="openZone('Couloir','Circulation entre le bar et les espaces de service.')" title="Couloir">
+            <div class="hotspot-ring" style="animation-delay:1.0s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- WC -->
+          <div class="hotspot" style="left:19%;top:73%" onclick="openZone('WC','Sanitaires — état des équipements et carrelages.')" title="WC">
+            <div class="hotspot-ring" style="animation-delay:1.1s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Local technique -->
+          <div class="hotspot" style="left:7%;top:86%" onclick="openZone('Local technique','Local technique — état des installations.')" title="Local technique">
+            <div class="hotspot-ring" style="animation-delay:1.2s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre froide -->
+          <div class="hotspot" style="left:34%;top:28%" onclick="openZone('Chambre froide','Chambre froide — état de l\'isolation et des équipements.')" title="Chambre froide">
+            <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Stockage -->
+          <div class="hotspot" style="left:38%;top:38%" onclick="openZone('Stockage','Salle de stockage — état des revêtements et accès.')" title="Stockage">
+            <div class="hotspot-ring" style="animation-delay:1.3s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Cour intérieure -->
+          <div class="hotspot" style="left:56%;top:54%" onclick="openZone('Cour intérieure','Cour intérieure 250m² — état des revêtements extérieurs.')" title="Cour intérieure">
+            <div class="hotspot-ring" style="animation-delay:1.4s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre 12 -->
+          <div class="hotspot" style="left:42%;top:34%" onclick="openZone('Chambre 12','Chambre 12 — état des revêtements, menuiseries et équipements.')" title="Chambre 12">
+            <div class="hotspot-ring" style="animation-delay:1.6s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre 1 -->
+          <div class="hotspot" style="left:48%;top:75%" onclick="openZone('Chambre 1','Chambre 1 — état des revêtements, menuiseries et équipements.')" title="Chambre 1">
+            <div class="hotspot-ring" style="animation-delay:0.5s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Hall -->
+          <div class="hotspot" style="left:52%;top:71%" onclick="openZone('Hall','Hall de distribution entre chambres 1 et 2 — état des finitions.')" title="Hall">
+            <div class="hotspot-ring" style="animation-delay:0.6s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre 2 -->
+          <div class="hotspot" style="left:60%;top:75%" onclick="openZone('Chambre 2','Chambre 2 — état des revêtements, menuiseries et équipements.')" title="Chambre 2">
+            <div class="hotspot-ring" style="animation-delay:0.7s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre 3 -->
+          <div class="hotspot" style="left:67%;top:75%" onclick="openZone('Chambre 3','Chambre 3 — état des revêtements, menuiseries et équipements.')" title="Chambre 3">
+            <div class="hotspot-ring" style="animation-delay:0.9s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre 4 -->
+          <div class="hotspot" style="left:77%;top:75%" onclick="openZone('Chambre 4','Chambre 4 — état des revêtements, menuiseries et équipements.')" title="Chambre 4">
+            <div class="hotspot-ring" style="animation-delay:1.1s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre 5 — tout à droite tout en bas -->
+          <div class="hotspot" style="left:91%;top:77%" onclick="openZone('Chambre 5','Chambre 5 — état des revêtements, menuiseries et équipements.')" title="Chambre 5">
+            <div class="hotspot-ring" style="animation-delay:1.3s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre 7 -->
+          <div class="hotspot" style="left:90%;top:47%" onclick="openZone('Chambre 7','Chambre 7 — état des revêtements, menuiseries et équipements.')" title="Chambre 7">
+            <div class="hotspot-ring" style="animation-delay:0.4s"></div><div class="hotspot-dot"></div>
+          </div>
+        </div><!-- end plan-img-wrapper -->
+
         <div class="plan-nav plan-nav-left" onclick="showFloor('rdc', document.querySelectorAll('.floor-tab')[0])">
           <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
         </div>
@@ -861,39 +1108,17 @@
     </div>
   </div>
 
-  <!-- RDC POUTRES -->
+  <!-- RDC POUTRES — aucun hotspot -->
   <div class="plan-wrapper" id="plan-poutres">
     <div class="plan-container">
       <div class="plan-header">
         <span class="plan-floor-label">Rez-de-chaussée — Poutres</span>
-        <span class="plan-legend">Cliquer sur les zones pour voir les photos</span>
+        <span class="plan-legend">Relevé de charpente</span>
       </div>
       <div class="plan-canvas" id="canvas-poutres">
-        <img src="PLANS/RDC - POUTRES.png" class="plan-image" alt="Plan RDC Poutres">
-        <!-- Salle restauration N°1 -->
-        <div class="hotspot" style="left:52%;top:28%" onclick="openZone('Salle restauration N°1 — Poutres','Structure de charpente et poutres apparentes — grande salle.')" title="Salle restauration N°1">
-          <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Salle restauration N°2 -->
-        <div class="hotspot" style="left:13%;top:35%" onclick="openZone('Salle restauration N°2 — Poutres','Détail poutres et charpente — salle secondaire.')" title="Salle restauration N°2">
-          <div class="hotspot-ring" style="animation-delay:0.5s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Cuisine -->
-        <div class="hotspot" style="left:18%;top:52%" onclick="openZone('Cuisine — Poutres','Poutres et structure de toiture en cuisine.')" title="Cuisine">
-          <div class="hotspot-ring" style="animation-delay:0.8s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Bar -->
-        <div class="hotspot" style="left:18%;top:67%" onclick="openZone('Bar — Poutres','Éléments de charpente au-dessus du bar.')" title="Bar">
-          <div class="hotspot-ring" style="animation-delay:1.2s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Chambres aile droite -->
-        <div class="hotspot" style="left:88%;top:40%" onclick="openZone('Aile droite — Poutres','Structure de charpente des chambres côté Est.')" title="Aile droite">
-          <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Chambres aile sud -->
-        <div class="hotspot" style="left:60%;top:80%" onclick="openZone('Aile sud — Poutres','Poutres et charpente des chambres côté Sud.')" title="Aile sud">
-          <div class="hotspot-ring" style="animation-delay:1.5s"></div><div class="hotspot-dot"></div>
-        </div>
+        <div class="plan-img-wrapper">
+          <img src="PLANS/RDC - POUTRES.png" class="plan-image" alt="Plan RDC Poutres">
+        </div><!-- end plan-img-wrapper -->
         <div class="plan-nav plan-nav-left" onclick="showFloor('rdc', document.querySelectorAll('.floor-tab')[0])">
           <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
         </div>
@@ -908,114 +1133,305 @@
   <div class="plan-wrapper" id="plan-etage">
     <div class="plan-container">
       <div class="plan-header">
-        <span class="plan-floor-label">Premier étage</span>
+        <span class="plan-floor-label">Plan Étage</span>
         <span class="plan-legend">Cliquer sur les zones pour voir les photos</span>
       </div>
       <div class="plan-canvas" id="canvas-etage">
-        <img src="PLANS/R+1.png" class="plan-image" alt="Plan R+1">
-        <!-- Pièce 1 (gauche haut) -->
-        <div class="hotspot" style="left:14%;top:38%" onclick="openZone('Pièce 1','Pièce principale — état des revêtements et menuiseries.')" title="Pièce 1">
-          <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Pièce 2 (gauche milieu) -->
-        <div class="hotspot" style="left:22%;top:57%" onclick="openZone('Pièce 2','Seconde pièce — état des planchers et plafonds.')" title="Pièce 2">
-          <div class="hotspot-ring" style="animation-delay:0.6s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Chambre pincée (centre) -->
-        <div class="hotspot" style="left:32%;top:32%" onclick="openZone('Chambre pincée','Chambre mansardée — charpente et combles.')" title="Chambre pincée">
-          <div class="hotspot-ring" style="animation-delay:1s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- WC / Couloir (gauche bas) -->
-        <div class="hotspot" style="left:15%;top:72%" onclick="openZone('WC & Couloir','Sanitaires et circulation — état des finitions.')" title="WC & Couloir">
-          <div class="hotspot-ring" style="animation-delay:1.4s"></div><div class="hotspot-dot"></div>
-        </div>
-        <!-- Porche (bas) -->
-        <div class="hotspot" style="left:28%;top:83%" onclick="openZone('Porche','Espace de porche — couverture et revêtements extérieurs.')" title="Porche">
-          <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
-        </div>
+        <div class="plan-img-wrapper">
+          <img src="PLANS/R+1.png" class="plan-image" alt="Plan R+1">
+          <!-- Pièce 1 -->
+          <div class="hotspot" style="left:14%;top:38%" onclick="openZone('Pièce 1','Pièce principale — état des revêtements et menuiseries.')" title="Pièce 1">
+            <div class="hotspot-ring"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Pièce 2 -->
+          <div class="hotspot" style="left:22%;top:57%" onclick="openZone('Pièce 2','Seconde pièce — état des planchers et plafonds.')" title="Pièce 2">
+            <div class="hotspot-ring" style="animation-delay:0.6s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Chambre pincée -->
+          <div class="hotspot" style="left:32%;top:32%" onclick="openZone('Chambre pincée','Chambre mansardée — charpente et combles.')" title="Chambre pincée">
+            <div class="hotspot-ring" style="animation-delay:1s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- WC / Couloir -->
+          <div class="hotspot" style="left:15%;top:72%" onclick="openZone('WC & Couloir','Sanitaires et circulation — état des finitions.')" title="WC & Couloir">
+            <div class="hotspot-ring" style="animation-delay:1.4s"></div><div class="hotspot-dot"></div>
+          </div>
+          <!-- Porche -->
+          <div class="hotspot" style="left:28%;top:83%" onclick="openZone('Porche','Espace de porche — couverture et revêtements extérieurs.')" title="Porche">
+            <div class="hotspot-ring" style="animation-delay:0.3s"></div><div class="hotspot-dot"></div>
+          </div>
+        </div><!-- end plan-img-wrapper -->
         <div class="plan-nav plan-nav-left" onclick="showFloor('poutres', document.querySelectorAll('.floor-tab')[1])">
           <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
         </div>
-        <div class="plan-nav plan-nav-right" onclick="showFloor('etage', document.querySelectorAll('.floor-tab')[2])">
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc1', document.querySelector('#floor-nav .floor-tab[onclick*="fc1"]'))">
           <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAÇADES & COUPES — 12 planches -->
+  <div class="plan-wrapper" id="plan-fc1">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Façade Nord</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/1.png" class="plan-image" alt="Façade Nord">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('etage', document.querySelectorAll('.floor-tab')[2])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc2', document.querySelector('#floor-nav .floor-tab[onclick*="fc2"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc2">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Façade Sud</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/2.png" class="plan-image" alt="Façade Sud">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc1', document.querySelector('#floor-nav .floor-tab[onclick*="fc1"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc3', document.querySelector('#floor-nav .floor-tab[onclick*="fc3"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc3">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Façade Est</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/3.png" class="plan-image" alt="Façade Est">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc2', document.querySelector('#floor-nav .floor-tab[onclick*="fc2"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc4', document.querySelector('#floor-nav .floor-tab[onclick*="fc4"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc4">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Façade Ouest</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/4.png" class="plan-image" alt="Façade Ouest">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc3', document.querySelector('#floor-nav .floor-tab[onclick*="fc3"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc5', document.querySelector('#floor-nav .floor-tab[onclick*="fc5"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc5">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Coupe A-A</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/5.png" class="plan-image" alt="Coupe A-A">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc4', document.querySelector('#floor-nav .floor-tab[onclick*="fc4"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc6', document.querySelector('#floor-nav .floor-tab[onclick*="fc6"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc6">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Coupe B-B</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/6.png" class="plan-image" alt="Coupe B-B">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc5', document.querySelector('#floor-nav .floor-tab[onclick*="fc5"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc7', document.querySelector('#floor-nav .floor-tab[onclick*="fc7"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc7">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Coupe C-C</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/7.png" class="plan-image" alt="Coupe C-C">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc6', document.querySelector('#floor-nav .floor-tab[onclick*="fc6"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc8', document.querySelector('#floor-nav .floor-tab[onclick*="fc8"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc8">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Coupe D-D</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/8.png" class="plan-image" alt="Coupe D-D">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc7', document.querySelector('#floor-nav .floor-tab[onclick*="fc7"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc9', document.querySelector('#floor-nav .floor-tab[onclick*="fc9"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc9">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Planche 9</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/9.png" class="plan-image" alt="Planche 9">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc8', document.querySelector('#floor-nav .floor-tab[onclick*="fc8"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc10', document.querySelector('#floor-nav .floor-tab[onclick*="fc10"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc10">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Planche 10</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/10.png" class="plan-image" alt="Planche 10">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc9', document.querySelector('#floor-nav .floor-tab[onclick*="fc9"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc11', document.querySelector('#floor-nav .floor-tab[onclick*="fc11"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc11">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Planche 11</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/11.png" class="plan-image" alt="Planche 11">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc10', document.querySelector('#floor-nav .floor-tab[onclick*="fc10"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloor('fc12', document.querySelector('#floor-nav .floor-tab[onclick*="fc12"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc12">
+    <div class="plan-container">
+      <div class="plan-header">
+        <span class="plan-floor-label">Planche 12</span>
+        <span class="plan-legend">Façades & Coupes</span>
+      </div>
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/12.png" class="plan-image" alt="Planche 12">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('fc11', document.querySelector('#floor-nav .floor-tab[onclick*="fc11"]'))">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PAGE CATÉGORIES (Page 3) — now second -->
-<section id="page-categories" style="background:var(--cream);">
-  <div class="section-header" style="background:var(--cream); padding-top: 72px; border-top: 1px solid var(--border);">
-    <p class="section-label">Documentation</p>
-    <h2 class="section-title">État des lieux</h2>
+<!-- PAGE PHOTOS SENSIBLES -->
+<section id="page-categories" style="padding-top:64px; background:var(--warm-white);">
+  <div class="section-header" style="background:var(--warm-white); padding-top: 80px;">
+    <p class="section-label">Patrimoine</p>
+    <h2 class="section-title">Photos Sensibles</h2>
   </div>
 
-  <div class="cards-grid">
-    <!-- FAÇADES ET COUPES -->
-    <div class="card" onclick="openGallery()">
-      <div class="card-image card-image-1">
-        <div class="card-image-inner" style="background-image:none; background-color:#cfc3af; display:flex;align-items:center;justify-content:center;">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none" opacity="0.5">
-            <!-- Façade building silhouette -->
-            <rect x="8" y="40" width="64" height="30" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
-            <polygon points="8,40 40,14 72,40" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
-            <rect x="18" y="52" width="12" height="18" stroke="#4a4a42" stroke-width="1" fill="none"/>
-            <rect x="34" y="52" width="12" height="12" stroke="#4a4a42" stroke-width="1" fill="none"/>
-            <rect x="50" y="52" width="12" height="18" stroke="#4a4a42" stroke-width="1" fill="none"/>
-            <!-- Coupe line -->
-            <line x1="4" y1="37" x2="76" y2="37" stroke="#4a4a42" stroke-width="0.8" stroke-dasharray="3,2"/>
-          </svg>
-        </div>
-      </div>
-      <div class="card-body">
-        <p class="card-title">Façades & Coupes</p>
-        <p class="card-desc">Élévations et coupes architecturales du bâtiment</p>
-      </div>
-      <div class="card-arrow">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3" stroke="#1a1a18" stroke-width="1" fill="none"/></svg>
-      </div>
-    </div>
+  <div class="floor-nav" id="sensibles-nav">
+    <div class="floor-tab active" onclick="showSensible(0, this)">Photo 1</div>
+  </div>
 
-    <!-- PHOTOS EDL -->
-    <div class="card" onclick="openModal('edl')">
-      <div class="card-image card-image-2">
-        <div class="card-image-inner" style="background-image:none; background-color:#b8a88a; display:flex;align-items:center;justify-content:center;">
-          <svg width="80" height="60" viewBox="0 0 80 60" fill="none" opacity="0.5">
-            <rect x="5" y="8" width="70" height="44" rx="2" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
-            <circle cx="40" cy="30" r="12" stroke="#4a4a42" stroke-width="1.2" fill="none"/>
-            <circle cx="40" cy="30" r="5" fill="#4a4a42" opacity="0.4"/>
-            <rect x="28" y="5" width="24" height="6" rx="1" fill="#4a4a42" opacity="0.3"/>
-          </svg>
+  <div id="sensibles-wrapper">
+    <div class="plan-wrapper active" id="sensible-0">
+      <div class="plan-container">
+        <div class="plan-header">
+          <span class="plan-floor-label">Photos Sensibles</span>
+          <span class="plan-legend">Détails architecturaux & éléments remarquables</span>
         </div>
-      </div>
-      <div class="card-body">
-        <p class="card-title">Photos EDL</p>
-        <p class="card-desc">État des lieux photographique par zone</p>
-      </div>
-      <div class="card-arrow">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3" stroke="#1a1a18" stroke-width="1" fill="none"/></svg>
-      </div>
-    </div>
-
-    <!-- PHOTOS SENSIBLES -->
-    <div class="card" onclick="openModal('sensibles')">
-      <div class="card-image card-image-3">
-        <div class="card-image-inner" style="background-image:none; background-color:#a89880; display:flex;align-items:center;justify-content:center;">
-          <svg width="70" height="70" viewBox="0 0 70 70" fill="none" opacity="0.5">
-            <circle cx="35" cy="35" r="28" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
-            <circle cx="35" cy="35" r="16" stroke="#4a4a42" stroke-width="1" fill="none"/>
-            <line x1="7" y1="35" x2="63" y2="35" stroke="#4a4a42" stroke-width="0.8"/>
-            <line x1="35" y1="7" x2="35" y2="63" stroke="#4a4a42" stroke-width="0.8"/>
-          </svg>
+        <div class="plan-canvas">
+          <div class="plan-img-wrapper">
+            <img src="" class="plan-image sensible-img" alt="Photo sensible">
+          </div>
         </div>
-      </div>
-      <div class="card-body">
-        <p class="card-title">Photos Sensibles</p>
-        <p class="card-desc">Détails architecturaux & éléments remarquables</p>
-      </div>
-      <div class="card-arrow">
-        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3" stroke="#1a1a18" stroke-width="1" fill="none"/></svg>
       </div>
     </div>
   </div>
@@ -1029,26 +1445,20 @@
 
 <!-- MODAL ZONE -->
 <div class="modal-overlay" id="modal-zone" onclick="closeModal('modal-zone')">
-  <div class="modal" onclick="event.stopPropagation()">
+  <div class="modal modal-zone-box" onclick="event.stopPropagation()">
     <div class="modal-close" onclick="closeModal('modal-zone')">✕</div>
     <p class="modal-zone" id="modal-zone-label">Zone</p>
     <h3 class="modal-title" id="modal-zone-title">Titre</h3>
-    <div class="modal-photos">
-      <div class="modal-photo" style="background:#d4c9b5; display:flex;align-items:center;justify-content:center;">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" opacity="0.4">
-          <rect x="4" y="8" width="32" height="24" rx="1" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
-          <circle cx="20" cy="20" r="6" stroke="#4a4a42" stroke-width="1.2" fill="none"/>
-          <rect x="14" y="5" width="12" height="5" rx="0.5" fill="#4a4a42" opacity="0.3"/>
-        </svg>
+    <!-- Galerie principale -->
+    <div class="mz-main-wrap">
+      <button class="mz-arrow mz-prev" onclick="mzMove(-1)">&#8592;</button>
+      <div class="mz-main-img-wrap">
+        <img id="mz-main-img" src="" alt="">
       </div>
-      <div class="modal-photo" style="background:#c8b89a; display:flex;align-items:center;justify-content:center;">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" opacity="0.4">
-          <rect x="4" y="8" width="32" height="24" rx="1" stroke="#4a4a42" stroke-width="1.5" fill="none"/>
-          <circle cx="20" cy="20" r="6" stroke="#4a4a42" stroke-width="1.2" fill="none"/>
-          <rect x="14" y="5" width="12" height="5" rx="0.5" fill="#4a4a42" opacity="0.3"/>
-        </svg>
-      </div>
+      <button class="mz-arrow mz-next" onclick="mzMove(1)">&#8594;</button>
     </div>
+    <!-- Miniatures -->
+    <div class="mz-thumbs" id="mz-thumbs"></div>
     <p class="modal-desc" id="modal-zone-desc"></p>
   </div>
 </div>
@@ -1175,38 +1585,293 @@
 
 
   function showFloor(floor, tab) {
-    document.querySelectorAll('.floor-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#floor-nav .floor-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.plan-wrapper').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
+    if (tab) tab.classList.add('active');
     document.getElementById('plan-' + floor).classList.add('active');
   }
 
-  // Zone modal
+  function scrollNav(dx) {
+    document.getElementById('floor-nav').scrollBy({ left: dx, behavior: 'smooth' });
+  }
+
+  function toggleFcGroup() {
+    const group = document.getElementById('fc-group');
+    const btn   = document.getElementById('fc-group-btn');
+    const isOpen = group.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+  }
+
+  // Ferme le dropdown si on clique ailleurs
+  document.addEventListener('click', e => {
+    const group = document.getElementById('fc-group');
+    if (group && !group.contains(e.target)) {
+      group.classList.remove('open');
+      document.getElementById('fc-group-btn').classList.remove('open');
+    }
+  });
+
+  function showFloorFc(floor, tab) {
+    // Désactiver tous les tabs normaux
+    document.querySelectorAll('#floor-nav .floor-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.plan-wrapper').forEach(p => p.classList.remove('active'));
+    // Activer le tab dans le dropdown
+    tab.classList.add('active');
+    // Marquer le bouton groupe comme actif
+    document.getElementById('fc-group-btn').classList.add('has-active');
+    document.getElementById('plan-' + floor).classList.add('active');
+    // Fermer le dropdown
+    document.getElementById('fc-group').classList.remove('open');
+    document.getElementById('fc-group-btn').classList.remove('open');
+  }
+
+  // Images par zone
+  const ZONE_IMAGES = {
+    'Chambre froide': [
+      'CH. FROIDE/1.png',
+      'CH. FROIDE/2.png',
+      'CH. FROIDE/3.png',
+      'CH. FROIDE/4.png',
+      'CH. FROIDE/5.png',
+    ],
+    'Cour intérieure': [
+      'EXTERIEUR/1.png',
+      'EXTERIEUR/2.png',
+      'EXTERIEUR/3.jpg',
+      'EXTERIEUR/4.jpg',
+      'EXTERIEUR/5.jpg',
+      'EXTERIEUR/6.jpg',
+      'EXTERIEUR/7.jpg',
+      'EXTERIEUR/8.jpg',
+      'EXTERIEUR/9.jpg',
+      'EXTERIEUR/10.jpg',
+      'EXTERIEUR/11.jpg',
+      'EXTERIEUR/12.jpg',
+      'EXTERIEUR/13.jpg',
+      'EXTERIEUR/14.jpg',
+      'EXTERIEUR/15.jpg',
+      'EXTERIEUR/16.jpg',
+      'EXTERIEUR/17.jpg',
+      'EXTERIEUR/18.jpg',
+      'EXTERIEUR/19.jpg',
+      'EXTERIEUR/20.jpg',
+      'EXTERIEUR/21.jpg',
+      'EXTERIEUR/22.jpg',
+      'EXTERIEUR/23.jpg',
+    ],
+    'WC': [
+      'RDC/WC/1.JPG',
+      'RDC/WC/2.JPG',
+      'RDC/WC/3.JPG',
+      'RDC/WC/4.JPG',
+    ],
+    'Salle de restauration N°2': [
+      'RDC/SALLE RESTAU 2/1.JPG',
+      'RDC/SALLE RESTAU 2/2.JPG',
+      'RDC/SALLE RESTAU 2/3.JPG',
+      'RDC/SALLE RESTAU 2/4.JPG',
+      'RDC/SALLE RESTAU 2/5.JPG',
+      'RDC/SALLE RESTAU 2/6.JPG',
+      'RDC/SALLE RESTAU 2/7.JPG',
+      'RDC/SALLE RESTAU 2/8.JPG',
+      'RDC/SALLE RESTAU 2/9.JPG',
+    ],
+    'Stockage': [
+      'STOCKAGE/1.png',
+      'STOCKAGE/2.png',
+      'STOCKAGE/3.png',
+    ],
+    'Hall': [
+      'HOTEL/couloir ch 1 et 2.jpg',
+    ],
+    'Local technique': [
+      'LOCAL TECH/1.png',
+      'LOCAL TECH/2.png',
+      'LOCAL TECH/3.png',
+      'LOCAL TECH/4.png',
+    ],
+    'Bar': [
+      'RDC/BAR/1.JPG',
+      'RDC/BAR/2.JPG',
+      'RDC/BAR/3.JPG',
+      'RDC/BAR/4.JPG',
+      'RDC/BAR/6.JPG',
+      'RDC/BAR/7.JPG',
+      'RDC/BAR/8.JPG',
+    ],
+    'Couloir': [
+      'RDC/COULOIR/1.JPG',
+      'RDC/COULOIR/2.JPG',
+      'RDC/COULOIR/3.JPG',
+    ],
+    'Cuisine': [
+      'RDC/CUISINE/1.JPG',
+      'RDC/CUISINE/2.JPG',
+      'RDC/CUISINE/3.JPG',
+    ],
+    'Escalier': [
+      'RDC/ESCALIER/1020347.JPG',
+      'RDC/ESCALIER/1020403.JPG',
+      'RDC/ESCALIER/IMG_0322.jpg',
+    ],
+    'Chambre 1': [
+      'HOTEL/CHAMBRE 1/1.png',
+      'HOTEL/CHAMBRE 1/2.png',
+      'HOTEL/CHAMBRE 1/3.png',
+      'HOTEL/CHAMBRE 1/4.png',
+      'HOTEL/CHAMBRE 1/5.png',
+      'HOTEL/CHAMBRE 1/6.png',
+      'HOTEL/CHAMBRE 1/7.png',
+    ],
+    'Chambre 2': [
+      'HOTEL/CHAMBRE 2/1.jpg',
+      'HOTEL/CHAMBRE 2/2.jpg',
+      'HOTEL/CHAMBRE 2/3.jpg',
+      'HOTEL/CHAMBRE 2/4.jpg',
+      'HOTEL/CHAMBRE 2/5.jpg',
+      'HOTEL/CHAMBRE 2/6.jpg',
+    ],
+    'Chambre 3': [
+      'HOTEL/CHAMBRE 3/1.png',
+      'HOTEL/CHAMBRE 3/2.jpg',
+      'HOTEL/CHAMBRE 3/3.jpg',
+      'HOTEL/CHAMBRE 3/4.png',
+      'HOTEL/CHAMBRE 3/5.png',
+      'HOTEL/CHAMBRE 3/6.png',
+      'HOTEL/CHAMBRE 3/7.png',
+    ],
+    'Chambre 4': [
+      'HOTEL/CHAMBRE 4/1.png',
+      'HOTEL/CHAMBRE 4/2.png',
+      'HOTEL/CHAMBRE 4/3.jpg',
+      'HOTEL/CHAMBRE 4/4.png',
+      'HOTEL/CHAMBRE 4/5.png',
+      'HOTEL/CHAMBRE 4/6.png',
+    ],
+    'Chambre 5': [
+      'HOTEL/CHAMBRE 5/1.jpg',
+      'HOTEL/CHAMBRE 5/2.jpg',
+      'HOTEL/CHAMBRE 5/3.jpg',
+      'HOTEL/CHAMBRE 5/4.png',
+      'HOTEL/CHAMBRE 5/5.png',
+      'HOTEL/CHAMBRE 5/6.png',
+    ],
+    'Chambre 7': [
+      'HOTEL/CHAMBRE 7/1.png',
+      'HOTEL/CHAMBRE 7/2.png',
+      'HOTEL/CHAMBRE 7/3.png',
+      'HOTEL/CHAMBRE 7/4.png',
+      'HOTEL/CHAMBRE 7/5.png',
+      'HOTEL/CHAMBRE 7/6.png',
+    ],
+    'Chambre 12': [
+      'HOTEL/CHAMBRE 12/1.png',
+      'HOTEL/CHAMBRE 12/2.png',
+      'HOTEL/CHAMBRE 12/3.png',
+      'HOTEL/CHAMBRE 12/4.png',
+      'HOTEL/CHAMBRE 12/5.png',
+    ],
+  };
+
+  let mzImages = [];
+  let mzIndex  = 0;
+
   function openZone(title, desc) {
     document.getElementById('modal-zone-label').textContent = 'Zone';
     document.getElementById('modal-zone-title').textContent = title;
-    document.getElementById('modal-zone-desc').textContent = desc;
+    document.getElementById('modal-zone-desc').textContent  = desc;
+
+    mzImages = ZONE_IMAGES[title] || [];
+    mzIndex  = 0;
+
+    const thumbsEl = document.getElementById('mz-thumbs');
+    const mainImg  = document.getElementById('mz-main-img');
+    thumbsEl.innerHTML = '';
+
+    if (mzImages.length > 0) {
+      mainImg.src = mzImages[0];
+      mzImages.forEach((src, i) => {
+        const t = document.createElement('img');
+        t.src       = src;
+        t.className = 'mz-thumb' + (i === 0 ? ' active' : '');
+        t.onclick   = () => mzGoTo(i);
+        thumbsEl.appendChild(t);
+      });
+    } else {
+      mainImg.src = '';
+    }
+
     document.getElementById('modal-zone').classList.add('open');
   }
 
-  // Category modals
-  const catData = {
-    edl: {
-      title: 'Photos EDL',
-      desc: 'Photographies d\'état des lieux réalisées par zone, documentant l\'état actuel du bâtiment. Les images couvrent l\'ensemble des espaces intérieurs et extérieurs selon un protocole systématique.'
-    },
-    sensibles: {
-      title: 'Photos Sensibles',
-      desc: 'Documentation photographique des éléments architecturaux remarquables : détails de charpente, menuiseries d\'origine, revêtements caractéristiques et éléments décoratifs présentant un intérêt patrimonial.'
-    }
-  };
-
-  function openModal(type) {
-    const data = catData[type];
-    document.getElementById('modal-cat-title').textContent = data.title;
-    document.getElementById('modal-cat-desc').textContent = data.desc;
-    document.getElementById('modal-cat').classList.add('open');
+  function mzGoTo(i) {
+    if (!mzImages.length) return;
+    mzIndex = (i + mzImages.length) % mzImages.length;
+    document.getElementById('mz-main-img').src = mzImages[mzIndex];
+    document.querySelectorAll('.mz-thumb').forEach((t, j) => {
+      t.classList.toggle('active', j === mzIndex);
+    });
   }
+
+  function mzMove(dir) { mzGoTo(mzIndex + dir); }
+
+  // ─── PHOTOS SENSIBLES ───
+  const SENSIBLES_IMAGES = [
+    'SENSIBLES/1.jpg','SENSIBLES/2.jpg','SENSIBLES/3.jpg','SENSIBLES/4.jpg','SENSIBLES/5.jpg',
+    'SENSIBLES/6.jpg','SENSIBLES/7.jpg','SENSIBLES/8.jpg','SENSIBLES/9.jpg','SENSIBLES/10.jpg',
+    'SENSIBLES/11.jpg','SENSIBLES/12.jpg','SENSIBLES/13.jpg','SENSIBLES/14.jpg','SENSIBLES/15.jpg',
+    'SENSIBLES/16.jpg','SENSIBLES/17.jpg','SENSIBLES/18.jpg','SENSIBLES/19.jpg','SENSIBLES/20.jpg',
+    'SENSIBLES/21.jpg','SENSIBLES/22.jpg','SENSIBLES/23.jpg','SENSIBLES/24.jpg','SENSIBLES/25.jpg',
+    'SENSIBLES/26.jpg','SENSIBLES/27.jpg','SENSIBLES/28.jpg','SENSIBLES/29.jpg','SENSIBLES/30.jpg',
+    'SENSIBLES/31.jpg','SENSIBLES/32.jpg','SENSIBLES/33.jpg','SENSIBLES/34.jpg','SENSIBLES/35.jpg',
+    'SENSIBLES/36.jpg','SENSIBLES/37.jpg','SENSIBLES/38.jpg','SENSIBLES/39.jpg',
+  ];
+
+  function initSensibles() {
+    const nav = document.getElementById('sensibles-nav');
+    const wrapper = document.getElementById('sensibles-wrapper');
+    if (!SENSIBLES_IMAGES.length) return;
+
+    nav.innerHTML = '';
+    wrapper.innerHTML = '';
+
+    SENSIBLES_IMAGES.forEach((src, i) => {
+      const tab = document.createElement('div');
+      tab.className = 'floor-tab' + (i === 0 ? ' active' : '');
+      tab.textContent = 'Photo ' + (i + 1);
+      tab.onclick = () => showSensible(i, tab);
+      nav.appendChild(tab);
+
+      const wrapper_div = document.createElement('div');
+      wrapper_div.className = 'plan-wrapper' + (i === 0 ? ' active' : '');
+      wrapper_div.id = 'sensible-' + i;
+      wrapper_div.innerHTML = `
+        <div class="plan-container">
+          <div class="plan-header">
+            <span class="plan-floor-label">Photo ${i + 1}</span>
+            <span class="plan-legend">Détails architecturaux & éléments remarquables</span>
+          </div>
+          <div class="plan-canvas">
+            <div class="plan-img-wrapper">
+              <img src="${src}" class="plan-image sensible-fit" alt="Photo sensible ${i + 1}">
+            </div>
+            ${i > 0 ? `<div class="plan-nav plan-nav-left" onclick="showSensible(${i-1}, document.querySelectorAll('#sensibles-nav .floor-tab')[${i-1}])"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg></div>` : ''}
+            ${i < SENSIBLES_IMAGES.length - 1 ? `<div class="plan-nav plan-nav-right" onclick="showSensible(${i+1}, document.querySelectorAll('#sensibles-nav .floor-tab')[${i+1}])"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg></div>` : ''}
+          </div>
+        </div>
+      `;
+      wrapper.appendChild(wrapper_div);
+    });
+  }
+
+  function showSensible(index, tab) {
+    document.querySelectorAll('#sensibles-nav .floor-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#sensibles-wrapper .plan-wrapper').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('sensible-' + index).classList.add('active');
+  }
+
+  document.addEventListener('DOMContentLoaded', initSensibles);
 
   function closeModal(id) {
     document.getElementById(id).classList.remove('open');
