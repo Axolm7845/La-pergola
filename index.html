@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Pergola — Projet de diplôme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Avenir+Next:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --dark: #1a1a18;
+    --mid: #4a4a42;
+    --light-mid: #8a8a7e;
+    --accent: #c8b89a;
+    --border: rgba(26,26,24,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
+    background: var(--dark);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAVBAR ─── */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+  }
+
+  .navbar-left, .navbar-right {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: var(--dark);
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .navbar-left:hover, .navbar-right:hover {
+    border-bottom-color: var(--dark);
+    opacity: 0.6;
+  }
+
+  .navbar-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .navbar-logo svg {
+    width: 56px;
+    height: 40px;
+  }
+
+  /* ─── PAGE: GARDE ─── */
+  #page-garde {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--warm-white);
+  }
+
+  .hero {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(26,26,24,0.55) 0%, rgba(26,26,24,0.1) 55%, transparent 80%);
+    transform: scale(1.04);
+    transition: transform 8s ease;
+    z-index: 1;
+  }
+
+  .hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.04);
+    transition: transform 8s ease;
+    z-index: 0;
+  }
+
+  .hero:hover .hero-bg, .hero:hover .hero-bg-img { transform: scale(1); }
+
+  /* Placeholder tiled pattern if no real image */
+  .hero-texture {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(200,184,154,0.04) 2px, rgba(200,184,154,0.04) 4px);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 64px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 520px;
+  }
+
+  .hero-location {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 7vw, 84px);
+    font-weight: 300;
+    color: var(--warm-white);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+
+  .hero-subtitle {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.6);
+    font-weight: 300;
+    margin-bottom: 40px;
+  }
+
+  .hero-btn {
+    display: inline-block;
+    border: 1px solid rgba(245,240,232,0.5);
+    color: var(--warm-white);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
+    font-weight: 300;
+    background: transparent;
+    text-decoration: none;
+  }
+
+  .hero-btn:hover {
+    background: rgba(245,240,232,0.12);
+    border-color: rgba(245,240,232,0.9);
+  }
+
+  /* ─── PAGE: CATEGORIES (Page 3) ─── */
+  #page-categories {
+    background: var(--cream);
+    padding-top: 64px;
+    min-height: 100vh;
+  }
+
+  .section-header {
+    padding: 56px 64px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--dark);
+    font-style: italic;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    background: var(--cream);
+    margin: 0;
+    padding: 40px 64px 56px;
+  }
+
+  .card {
+    background: var(--warm-white);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+    border: 1px solid rgba(26,26,24,0.18);
+    box-shadow: 0 2px 12px rgba(26,26,24,0.06);
+  }
+
+  .card:hover {
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(26,26,24,0.13);
+    transform: translateY(-3px);
+  }
+
+  .card-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-image-inner {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease;
+  }
+
+  .card:hover .card-image-inner { transform: scale(1.04); }
+
+  .card-image-1 .card-image-inner {
+    background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80');
+    background-color: #d4c9b5;
+  }
+  .card-image-2 .card-image-inner {
+    background-image: url('https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=600&q=80');
+    background-color: #c8b89a;
+  }
+  .card-image-3 .card-image-inner {
+    background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80');
+    background-color: #b8a88a;
+  }
+
+  /* Overlay pattern for cards */
+  .card-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,26,24,0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .card-body {
+    padding: 24px 28px 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+
+  .card-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--light-mid);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 28px;
+    right: 28px;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateX(-6px);
+  }
+
+  .card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ─── PAGE: PLANS (Pages 1 & 2) ─── */
+  #page-plans {
+    background: var(--warm-white);
+    padding-top: 64px;
+    min-height: 100vh;
+  }
+
+  .floor-nav-wrap {
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm-white);
+  }
+
+  .floor-nav {
+    display: flex;
+    gap: 0;
+    padding: 0 48px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .floor-nav::-webkit-scrollbar { display: none; }
+
+  .floor-nav-arrow {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, var(--warm-white) 60%, transparent);
+    cursor: pointer;
+    z-index: 5;
+    border: none;
+    color: var(--mid);
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .floor-nav-arrow:hover { color: var(--dark); }
+  .floor-nav-arrow.nav-left { left: 0; background: linear-gradient(to right, var(--warm-white) 60%, transparent); }
+  .floor-nav-arrow.nav-right { right: 0; background: linear-gradient(to left, var(--warm-white) 60%, transparent); }
+
+  .floor-tab {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding: 20px 28px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--light-mid);
+    transition: all 0.2s;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .floor-tab.active {
+    color: var(--dark);
+    border-bottom-color: var(--dark);
+  }
+
+  .floor-tab:hover:not(.active) { color: var(--mid); }
+
+  /* Groupe déroulant Façades & Coupes */
+  .floor-tab-group {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .floor-tab-group-btn {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding: 20px 28px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--light-mid);
+    transition: all 0.2s;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 1px solid var(--border);
+    margin-left: 8px;
+    user-select: none;
+  }
+
+  .floor-tab-group-btn:hover { color: var(--mid); }
+  .floor-tab-group-btn.has-active { color: var(--dark); border-bottom-color: var(--dark); }
+
+  .floor-tab-group-btn .arrow-icon {
+    font-size: 8px;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+
+  .floor-tab-group-btn.open .arrow-icon { transform: rotate(180deg); }
+
+  .floor-tab-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-top: none;
+    min-width: 180px;
+    z-index: 50;
+    box-shadow: 0 8px 24px rgba(26,26,24,0.08);
+  }
+
+  .floor-tab-group.open .floor-tab-dropdown { display: block; }
+
+  .floor-tab-dropdown .floor-tab {
+    display: block;
+    padding: 14px 24px;
+    border-bottom: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+    width: 100%;
+  }
+
+  .floor-tab-dropdown .floor-tab:first-child { border-top: none; }
+  .floor-tab-dropdown .floor-tab.active { background: var(--cream); }
+
+  .plan-wrapper {
+    display: none;
+    padding: 48px 64px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .plan-wrapper.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .plan-container {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--cream);
+    overflow: hidden;
+  }
+
+  .plan-header {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .plan-floor-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--dark);
+  }
+
+  .plan-legend {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    font-weight: 300;
+  }
+
+  .plan-canvas {
+    position: relative;
+    width: 100%;
+    background-color: var(--cream);
+    overflow: hidden;
+    /* height driven by image aspect ratio */
+  }
+
+  /* Wrapper that matches exactly the rendered image size */
+  .plan-img-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+    line-height: 0;
+  }
+
+  /* Real plan images */
+  .plan-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: fill;
+    pointer-events: none;
+  }
+
+  /* Images sensibles ajustées à l'écran */
+  .plan-image.sensible-fit {
+    width: auto;
+    max-width: 100%;
+    height: calc(100vh - 180px);
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Nav arrows — positioned over the canvas */
+  .plan-canvas {
+    position: relative;
+  }
+
+  /* Hotspot zones */
+  .hotspot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: all;
+  }
+
+  .hotspot-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--dark);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .hotspot-dot {
+    position: absolute;
+    inset: 8px;
+    background: var(--dark);
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .hotspot:hover .hotspot-dot { transform: scale(1.3); }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.3; }
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    background: var(--dark);
+    color: var(--warm-white);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 10px 16px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    z-index: 10;
+    transform: translateY(-100%) translateX(-50%);
+    margin-top: -12px;
+  }
+
+  .tooltip.visible { opacity: 1; }
+
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom: none;
+    border-top-color: var(--dark);
+  }
+
+  /* Nav arrows */
+  .plan-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    background: rgba(245,240,232,0.9);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .plan-nav:hover {
+    background: var(--warm-white);
+    border-color: var(--dark);
+  }
+
+  .plan-nav-left { left: 16px; }
+  .plan-nav-right { right: 16px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    color: rgba(245,240,232,0.4);
+    padding: 40px 64px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* ─── SECTION SEPARATOR ─── */
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 64px;
+  }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,24,0.85);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--warm-white);
+    max-width: 560px;
+    width: 90%;
+    padding: 48px;
+    position: relative;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--mid);
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: var(--dark); color: var(--warm-white); }
+
+  .modal-zone {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    margin-bottom: 8px;
+  }
+
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 300;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .modal-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .modal-photo {
+    aspect-ratio: 4/3;
+    background: var(--accent);
+    overflow: hidden;
+  }
+
+  .modal-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .modal-desc {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* Zone modal galerie */
+  .modal-zone-box {
+    max-width: 720px;
+    width: 95%;
+    padding: 40px;
+  }
+
+  .mz-main-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .mz-main-img-wrap {
+    flex: 1;
+    aspect-ratio: 4/3;
+    background: var(--cream);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mz-main-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mz-arrow {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--mid);
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mz-arrow:hover { background: var(--dark); color: var(--warm-white); border-color: var(--dark); }
+
+  .mz-thumbs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .mz-thumb {
+    width: 56px;
+    height: 42px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.5;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .mz-thumb.active, .mz-thumb:hover {
+    opacity: 1;
+    border-color: var(--dark);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .navbar { padding: 0 20px; }
+    .hero-content { padding: 64px 24px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .floor-nav { padding: 0 20px; }
+    .plan-wrapper { padding: 24px 20px; }
+    .section-header { padding: 40px 24px 32px; }
+    .section-divider { margin: 0 24px; }
+    footer { padding: 32px 24px; flex-direction: column; gap: 12px; }
+  }
+  /* ─── GALLERY LIGHTBOX ─── */
+  .gallery-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,18,14,0.97);
+    z-index: 300;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.25s ease;
+  }
+
+  .gallery-overlay.open { display: flex; }
+
+  .gallery-inner {
+    width: 100%;
+    max-width: 1100px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 32px 20px;
+  }
+
+  /* Header */
+  .gallery-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 20px;
+    border-bottom: 1px solid rgba(245,240,232,0.1);
+    flex-shrink: 0;
+  }
+
+  .gallery-title-block {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  .gallery-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.9);
+    font-weight: 300;
+  }
+
+  .gallery-counter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: rgba(245,240,232,0.4);
+    font-style: italic;
+  }
+
+  .gallery-close {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(245,240,232,0.2);
+    color: rgba(245,240,232,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .gallery-close:hover {
+    background: rgba(245,240,232,0.1);
+    color: var(--warm-white);
+  }
+
+  /* Stage */
+  .gallery-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 0;
+    padding: 20px 0 16px;
+  }
+
+  .gallery-img-wrap {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .gallery-main-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    border: 1px solid rgba(245,240,232,0.06);
+  }
+
+  .gallery-main-img.transitioning {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  /* Arrows */
+  .gallery-arrow {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(245,240,232,0.2);
+    background: transparent;
+    color: rgba(245,240,232,0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .gallery-arrow:hover {
+    background: rgba(245,240,232,0.08);
+    color: var(--warm-white);
+    border-color: rgba(245,240,232,0.5);
+  }
+
+  /* Thumbnails */
+  .gallery-thumbs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 8px;
+    flex-shrink: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(245,240,232,0.2) transparent;
+  }
+
+  .gallery-thumbs::-webkit-scrollbar { height: 3px; }
+  .gallery-thumbs::-webkit-scrollbar-thumb { background: rgba(245,240,232,0.2); }
+
+  .g-thumb {
+    width: 72px;
+    height: 52px;
+    flex-shrink: 0;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.45;
+    border: 1px solid transparent;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+
+  .g-thumb:hover { opacity: 0.75; }
+
+  .g-thumb.active {
+    opacity: 1;
+    border-color: rgba(245,240,232,0.7);
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="navbar-left" href="#page-plans">Plans Techniques</a>
+    <div class="navbar-logo">
+      <img src="Logo pergola.png" alt="La Pergola" style="height:70px; width:auto; display:block;">
+    </div>
+  </div>
+  <a class="navbar-right" href="#page-categories">Photos Sensibles</a>
+</nav>
+
+<!-- PAGE DE GARDE -->
+<section id="page-garde">
+  <div class="hero" onclick="document.getElementById('page-plans').scrollIntoView({behavior:'smooth'})">
+    <img class="hero-bg-img" src="page-de-garde.png" alt="">
+    <div class="hero-bg"></div>
+    <div class="hero-texture"></div>
+    <div class="hero-content">
+      <p class="hero-location">Lamotte-Beuvron (41)</p>
+      <h1 class="hero-title">La<br>Pergola</h1>
+      <p class="hero-subtitle">Ancien Hôtel-Pizzeria-Grill</p>
+      <a class="hero-btn" href="#page-plans">Découvrir le bâtiment</a>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE PLANS (Pages 1 & 2) — first after garde -->
+<section id="page-plans" style="padding-top:64px; background:var(--warm-white);">
+  <div class="section-header" style="background:var(--warm-white); padding-top: 80px;">
+    <p class="section-label"></p>
+    <h2 class="section-title">Plans techniques</h2>
+  </div>
+
+  <div class="floor-nav-wrap">
+    <button class="floor-nav-arrow nav-left" onclick="scrollNav(-200)">&#8592;</button>
+    <div class="floor-nav" id="floor-nav">
+      <div class="floor-tab active" onclick="showFloor('rdc', this)">Plan RDC</div>
+      <div class="floor-tab" onclick="showFloor('poutres', this)">RDC — Poutres</div>
+      <div class="floor-tab" onclick="showFloor('etage', this)">Plan Étage</div>
+      <div class="floor-tab" onclick="showFloor('fc1', this)">Façade A</div>
+      <div class="floor-tab" onclick="showFloor('fc2', this)">Façade B</div>
+      <div class="floor-tab" onclick="showFloor('fc3', this)">Façade C</div>
+      <div class="floor-tab" onclick="showFloor('fc4', this)">Façade D</div>
+      <div class="floor-tab" onclick="showFloor('fc5', this)">Façade E</div>
+      <div class="floor-tab" onclick="showFloor('fc6', this)">Façade F</div>
+      <div class="floor-tab" onclick="showFloor('fc7', this)">Façade G</div>
+      <div class="floor-tab" onclick="showFloor('fc8', this)">Coupe A</div>
+      <div class="floor-tab" onclick="showFloor('fc9', this)">Coupe B</div>
+      <div class="floor-tab" onclick="showFloor('fc10', this)">Planche 10</div>
+      <div class="floor-tab" onclick="showFloor('fc11', this)">Planche 11</div>
+      <div class="floor-tab" onclick="showFloor('fc12', this)">Planche 12</div>
+    </div>
+    <button class="floor-nav-arrow nav-right" onclick="scrollNav(200)">&#8594;</button>
+  </div>
+
+  <!-- RDC -->
+  <div class="plan-wrapper active" id="plan-rdc">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/1.png" class="plan-image" alt="Façade Nord">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloor('etage', document.querySelectorAll('.floor-tab')[2])">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc2')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc2">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/2.png" class="plan-image" alt="Façade Sud">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc1')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc3')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc3">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/3.png" class="plan-image" alt="Façade Est">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc2')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc4')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc4">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/4.png" class="plan-image" alt="Façade Ouest">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc3')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc5')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc5">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/5.png" class="plan-image" alt="Coupe A-A">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc4')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc6')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc6">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/6.png" class="plan-image" alt="Coupe B-B">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc5')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc7')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc7">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/7.png" class="plan-image" alt="Coupe C-C">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc6')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc8')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc8">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/8.png" class="plan-image" alt="Coupe D-D">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc7')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc9')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc9">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/9.png" class="plan-image" alt="Planche 9">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc8')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc10')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc10">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/10.png" class="plan-image" alt="Planche 10">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc9')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc11')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc11">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/11.png" class="plan-image" alt="Planche 11">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc10')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="plan-nav plan-nav-right" onclick="showFloorByName('fc12')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-wrapper" id="plan-fc12">
+    <div class="plan-container">
+      <div class="plan-canvas">
+        <div class="plan-img-wrapper">
+          <img src="FAÇADES ET COUPES/12.png" class="plan-image" alt="Planche 12">
+        </div>
+        <div class="plan-nav plan-nav-left" onclick="showFloorByName('fc11')">
+          <svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE PHOTOS SENSIBLES -->
+<section id="page-categories" style="padding-top:64px; background:var(--warm-white);">
+  <div class="section-header" style="background:var(--warm-white); padding-top: 80px;">
+    <p class="section-label">Patrimoine</p>
+    <h2 class="section-title">Photos Sensibles</h2>
+  </div>
+
+  <div class="floor-nav" id="sensibles-nav">
+    <div class="floor-tab active" onclick="showSensible(0, this)">Photo 1</div>
+  </div>
+
+  <div id="sensibles-wrapper">
+    <div class="plan-wrapper active" id="sensible-0">
+      <div class="plan-container">
+        <div class="plan-header">
+          <span class="plan-floor-label">Photos Sensibles</span>
+          <span class="plan-legend">Détails architecturaux & éléments remarquables</span>
+        </div>
+        <div class="plan-canvas">
+          <div class="plan-img-wrapper">
+            <img src="" class="plan-image sensible-img" alt="Photo sensible">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>La Pergola — Lamotte-Beuvron (41)</span>
+  <span>Mémoire de Bâtiment · 2024</span>
+</footer>
+
+<!-- MODAL ZONE -->
+<div class="modal-overlay" id="modal-zone" onclick="closeModal('modal-zone')">
+  <div class="modal modal-zone-box" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('modal-zone')">✕</div>
+    <p class="modal-zone" id="modal-zone-label">Zone</p>
+    <h3 class="modal-title" id="modal-zone-title">Titre</h3>
+    <!-- Galerie principale -->
+    <div class="mz-main-wrap">
+      <button class="mz-arrow mz-prev" onclick="mzMove(-1)">&#8592;</button>
+      <div class="mz-main-img-wrap">
+        <img id="mz-main-img" src="" alt="">
+      </div>
+      <button class="mz-arrow mz-next" onclick="mzMove(1)">&#8594;</button>
+    </div>
+    <!-- Miniatures -->
+    <div class="mz-thumbs" id="mz-thumbs"></div>
+    <p class="modal-desc" id="modal-zone-desc"></p>
+  </div>
+</div>
+
+<!-- MODAL CATEGORIES -->
+<div class="modal-overlay" id="modal-cat" onclick="closeModal('modal-cat')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-close" onclick="closeModal('modal-cat')">✕</div>
+    <p class="modal-zone">Photographies</p>
+    <h3 class="modal-title" id="modal-cat-title">Titre</h3>
+    <p class="modal-desc" id="modal-cat-desc"></p>
+  </div>
+</div>
+
+<!-- GALLERY LIGHTBOX — FAÇADES & COUPES -->
+<div class="gallery-overlay" id="gallery-overlay" onclick="handleGalleryClick(event)">
+  <div class="gallery-inner">
+
+    <!-- Header -->
+    <div class="gallery-header">
+      <div class="gallery-title-block">
+        <p class="gallery-label">Façades & Coupes</p>
+        <p class="gallery-counter"><span id="g-current">1</span> / 12</p>
+      </div>
+      <div class="gallery-close" onclick="closeGallery()">✕</div>
+    </div>
+
+    <!-- Main image -->
+    <div class="gallery-stage">
+      <button class="gallery-arrow gallery-arrow-left" onclick="galleryMove(-1)">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M9 2L5 7l4 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      </button>
+      <div class="gallery-img-wrap">
+        <img id="g-main-img" src="" alt="" class="gallery-main-img">
+      </div>
+      <button class="gallery-arrow gallery-arrow-right" onclick="galleryMove(1)">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M5 2l4 5-4 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Thumbnails strip -->
+    <div class="gallery-thumbs" id="g-thumbs"></div>
+
+  </div>
+</div>
+
+<script>
+
+  // ─── GALLERY ───
+  const GALLERY_TOTAL = 12;
+  const GALLERY_PATH  = 'FAÇADES ET COUPES/';
+  let gIndex = 0;
+
+  function buildThumbs() {
+    const strip = document.getElementById('g-thumbs');
+    strip.innerHTML = '';
+    for (let i = 1; i <= GALLERY_TOTAL; i++) {
+      const img = document.createElement('img');
+      img.src = GALLERY_PATH + i + '.png';
+      img.alt = 'Façade ' + i;
+      img.className = 'g-thumb' + (i === 1 ? ' active' : '');
+      img.dataset.index = i - 1;
+      img.onclick = () => goTo(i - 1);
+      strip.appendChild(img);
+    }
+  }
+
+  function openGallery() {
+    gIndex = 0;
+    buildThumbs();
+    renderMain();
+    document.getElementById('gallery-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGallery() {
+    document.getElementById('gallery-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function renderMain(transition = false) {
+    const img = document.getElementById('g-main-img');
+    document.getElementById('g-current').textContent = gIndex + 1;
+
+    // Update active thumb
+    document.querySelectorAll('.g-thumb').forEach((t, i) => {
+      t.classList.toggle('active', i === gIndex);
+    });
+
+    // Scroll thumb into view
+    const activeThumb = document.querySelector('.g-thumb.active');
+    if (activeThumb) activeThumb.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+
+    if (transition) {
+      img.classList.add('transitioning');
+      setTimeout(() => {
+        img.src = GALLERY_PATH + (gIndex + 1) + '.png';
+        img.classList.remove('transitioning');
+      }, 180);
+    } else {
+      img.src = GALLERY_PATH + (gIndex + 1) + '.png';
+    }
+  }
+
+  function goTo(index) {
+    gIndex = (index + GALLERY_TOTAL) % GALLERY_TOTAL;
+    renderMain(true);
+  }
+
+  function galleryMove(dir) { goTo(gIndex + dir); }
+
+  function handleGalleryClick(e) {
+    if (e.target === document.getElementById('gallery-overlay')) closeGallery();
+  }
+
+  // Keyboard navigation for gallery
+  document.addEventListener('keydown', e => {
+    const overlay = document.getElementById('gallery-overlay');
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'ArrowRight') galleryMove(1);
+    if (e.key === 'ArrowLeft')  galleryMove(-1);
+    if (e.key === 'Escape')     closeGallery();
+  });
+
+
+  function showFloorByName(floor) {
+    const tab = document.querySelector('#floor-nav .floor-tab[onclick*="' + floor + '"]');
+    showFloor(floor, tab);
+  }
+
+  function showFloor(floor, tab) {
+    document.querySelectorAll('#floor-nav .floor-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.plan-wrapper').forEach(p => p.classList.remove('active'));
+    if (tab) tab.classList.add('active');
+    document.getElementById('plan-' + floor).classList.add('active');
+  }
+
+  function scrollNav(dx) {
+    document.getElementById('floor-nav').scrollBy({ left: dx, behavior: 'smooth' });
+  }
+
+  function toggleFcGroup() {
+    const group = document.getElementById('fc-group');
+    const btn   = document.getElementById('fc-group-btn');
+    const isOpen = group.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+  }
+
+  // Ferme le dropdown si on clique ailleurs
+  document.addEventListener('click', e => {
+    const group = document.getElementById('fc-group');
+    if (group && !group.contains(e.target)) {
+      group.classList.remove('open');
+      document.getElementById('fc-group-btn').classList.remove('open');
+    }
+  });
+
+  function showFloorFc(floor, tab) {
+    // Désactiver tous les tabs normaux
+    document.querySelectorAll('#floor-nav .floor-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.plan-wrapper').forEach(p => p.classList.remove('active'));
+    // Activer le tab dans le dropdown
+    tab.classList.add('active');
+    // Marquer le bouton groupe comme actif
+    document.getElementById('fc-group-btn').classList.add('has-active');
+    document.getElementById('plan-' + floor).classList.add('active');
+    // Fermer le dropdown
+    document.getElementById('fc-group').classList.remove('open');
+    document.getElementById('fc-group-btn').classList.remove('open');
+  }
+
+  // Images par zone
+  const ZONE_IMAGES = {
+    'Chambre froide': [
+      'CH. FROIDE/1.jpg',
+      'CH. FROIDE/2.jpg',
+      'CH. FROIDE/3.jpg',
+      'CH. FROIDE/4.jpg',
+      'CH. FROIDE/5.jpg',
+    ],
+    'Cour intérieure': [
+      'EXTERIEUR/1.jpg',
+      'EXTERIEUR/2.jpg',
+      'EXTERIEUR/3.jpg',
+      'EXTERIEUR/4.jpg',
+      'EXTERIEUR/5.jpg',
+      'EXTERIEUR/6.jpg',
+      'EXTERIEUR/7.jpg',
+      'EXTERIEUR/8.jpg',
+      'EXTERIEUR/9.jpg',
+      'EXTERIEUR/10.jpg',
+      'EXTERIEUR/11.jpg',
+      'EXTERIEUR/12.jpg',
+      'EXTERIEUR/13.jpg',
+      'EXTERIEUR/14.jpg',
+      'EXTERIEUR/15.jpg',
+      'EXTERIEUR/16.jpg',
+      'EXTERIEUR/17.jpg',
+      'EXTERIEUR/18.jpg',
+      'EXTERIEUR/19.jpg',
+      'EXTERIEUR/20.jpg',
+      'EXTERIEUR/21.jpg',
+      'EXTERIEUR/22.jpg',
+      'EXTERIEUR/23.jpg',
+    ],
+    'WC': [
+      'RDC/WC/1.JPG',
+      'RDC/WC/2.JPG',
+      'RDC/WC/3.JPG',
+      'RDC/WC/4.JPG',
+    ],
+    'Salle de restauration N°2': [
+      'RDC/SALLE RESTAU 2/1.JPG',
+      'RDC/SALLE RESTAU 2/2.JPG',
+      'RDC/SALLE RESTAU 2/3.JPG',
+      'RDC/SALLE RESTAU 2/4.JPG',
+      'RDC/SALLE RESTAU 2/5.JPG',
+      'RDC/SALLE RESTAU 2/6.JPG',
+      'RDC/SALLE RESTAU 2/7.JPG',
+      'RDC/SALLE RESTAU 2/8.JPG',
+      'RDC/SALLE RESTAU 2/9.JPG',
+    ],
+    'Stockage': [
+      'STOCKAGE/1.jpg',
+      'STOCKAGE/2.jpg',
+      'STOCKAGE/3.jpg',
+    ],
+    'Hall': [
+      'HOTEL/couloir ch 1 et 2.jpg',
+    ],
+    'Local technique': [
+      'LOCAL TECH/1.jpg',
+      'LOCAL TECH/2.jpg',
+      'LOCAL TECH/3.jpg',
+      'LOCAL TECH/4.jpg',
+    ],
+    'Bar': [
+      'RDC/BAR/1.JPG',
+      'RDC/BAR/2.JPG',
+      'RDC/BAR/3.JPG',
+      'RDC/BAR/4.JPG',
+      'RDC/BAR/6.JPG',
+      'RDC/BAR/7.JPG',
+      'RDC/BAR/8.JPG',
+    ],
+    'Couloir': [
+      'RDC/COULOIR/1.JPG',
+      'RDC/COULOIR/2.JPG',
+      'RDC/COULOIR/3.JPG',
+    ],
+    'Cuisine': [
+      'RDC/CUISINE/1.JPG',
+      'RDC/CUISINE/2.JPG',
+      'RDC/CUISINE/3.JPG',
+    ],
+    'Escalier': [
+      'RDC/ESCALIER/1020347.JPG',
+      'RDC/ESCALIER/1020403.JPG',
+      'RDC/ESCALIER/IMG_0322.jpg',
+    ],
+    'Chambre 1': [
+      'HOTEL/CHAMBRE 1/1.jpg',
+      'HOTEL/CHAMBRE 1/2.jpg',
+      'HOTEL/CHAMBRE 1/3.jpg',
+      'HOTEL/CHAMBRE 1/4.jpg',
+      'HOTEL/CHAMBRE 1/5.jpg',
+      'HOTEL/CHAMBRE 1/6.jpg',
+      'HOTEL/CHAMBRE 1/7.jpg',
+    ],
+    'Chambre 2': [
+      'HOTEL/CHAMBRE 2/1.jpg',
+      'HOTEL/CHAMBRE 2/2.jpg',
+      'HOTEL/CHAMBRE 2/3.jpg',
+      'HOTEL/CHAMBRE 2/4.jpg',
+      'HOTEL/CHAMBRE 2/5.jpg',
+      'HOTEL/CHAMBRE 2/6.jpg',
+    ],
+    'Chambre 3': [
+      'HOTEL/CHAMBRE 3/1.jpg',
+      'HOTEL/CHAMBRE 3/2.jpg',
+      'HOTEL/CHAMBRE 3/3.jpg',
+      'HOTEL/CHAMBRE 3/4.jpg',
+      'HOTEL/CHAMBRE 3/5.jpg',
+      'HOTEL/CHAMBRE 3/6.jpg',
+      'HOTEL/CHAMBRE 3/7.jpg',
+    ],
+    'Chambre 4': [
+      'HOTEL/CHAMBRE 4/1.jpg',
+      'HOTEL/CHAMBRE 4/2.jpg',
+      'HOTEL/CHAMBRE 4/3.jpg',
+      'HOTEL/CHAMBRE 4/4.jpg',
+      'HOTEL/CHAMBRE 4/5.jpg',
+      'HOTEL/CHAMBRE 4/6.jpg',
+    ],
+    'Chambre 5': [
+      'HOTEL/CHAMBRE 5/1.jpg',
+      'HOTEL/CHAMBRE 5/2.jpg',
+      'HOTEL/CHAMBRE 5/3.jpg',
+      'HOTEL/CHAMBRE 5/4.jpg',
+      'HOTEL/CHAMBRE 5/5.jpg',
+      'HOTEL/CHAMBRE 5/6.jpg',
+    ],
+    'Chambre 7': [
+      'HOTEL/CHAMBRE 7/1.jpg',
+      'HOTEL/CHAMBRE 7/2.jpg',
+      'HOTEL/CHAMBRE 7/3.jpg',
+      'HOTEL/CHAMBRE 7/4.jpg',
+      'HOTEL/CHAMBRE 7/5.jpg',
+      'HOTEL/CHAMBRE 7/6.jpg',
+    ],
+    'Chambre 12': [
+      'HOTEL/CHAMBRE 12/1.jpg',
+      'HOTEL/CHAMBRE 12/2.jpg',
+      'HOTEL/CHAMBRE 12/3.jpg',
+      'HOTEL/CHAMBRE 12/4.jpg',
+      'HOTEL/CHAMBRE 12/5.jpg',
+    ],
+    'WC': [
+      'RDC/WC/1.JPG',
+      'RDC/WC/2.JPG',
+      'RDC/WC/3.JPG',
+      'RDC/WC/4.JPG',
+      'ETAGE/WC/1.jpg',
+      'ETAGE/WC/2.jpg',
+      'ETAGE/WC/3.jpg',
+      'ETAGE/WC/4.jpg',
+    ],
+    'Espace bar': [
+      'ETAGE/ESPACE BAR/1.jpg',
+      'ETAGE/ESPACE BAR/2.jpg',
+      'ETAGE/ESPACE BAR/3.jpg',
+      'ETAGE/ESPACE BAR/4.jpg',
+      'ETAGE/ESPACE BAR/5.jpg',
+      'ETAGE/ESPACE BAR/6.jpg',
+      'ETAGE/ESPACE BAR/7.jpg',
+      'ETAGE/ESPACE BAR/8.jpg',
+      'ETAGE/ESPACE BAR/9.jpg',
+      'ETAGE/ESPACE BAR/10.jpg',
+    ],
+    'Escalier étage': [
+      'ETAGE/ESCALIER ETAGE/1.jpg',
+      'ETAGE/ESCALIER ETAGE/2.jpg',
+      'ETAGE/ESCALIER ETAGE/3.jpg',
+      'ETAGE/ESCALIER ETAGE/4.jpg',
+    ],
+    'Chambre privée': [
+      'ETAGE/CH PRIVÉE/1.jpg',
+      'ETAGE/CH PRIVÉE/2.jpg',
+      'ETAGE/CH PRIVÉE/3.jpg',
+      'ETAGE/CH PRIVÉE/4.jpg',
+      'ETAGE/CH PRIVÉE/5.jpg',
+      'ETAGE/CH PRIVÉE/6.jpg',
+      'ETAGE/CH PRIVÉE/7.jpg',
+    ],
+  };
+
+  let mzImages = [];
+  let mzIndex  = 0;
+
+  function openZone(title, desc) {
+    document.getElementById('modal-zone-label').textContent = 'Zone';
+    document.getElementById('modal-zone-title').textContent = title;
+    document.getElementById('modal-zone-desc').textContent  = desc;
+
+    mzImages = ZONE_IMAGES[title] || [];
+    mzIndex  = 0;
+
+    const thumbsEl = document.getElementById('mz-thumbs');
+    const mainImg  = document.getElementById('mz-main-img');
+    thumbsEl.innerHTML = '';
+
+    if (mzImages.length > 0) {
+      mainImg.src = mzImages[0];
+      mzImages.forEach((src, i) => {
+        const t = document.createElement('img');
+        t.src       = src;
+        t.className = 'mz-thumb' + (i === 0 ? ' active' : '');
+        t.onclick   = () => mzGoTo(i);
+        thumbsEl.appendChild(t);
+      });
+    } else {
+      mainImg.src = '';
+    }
+
+    document.getElementById('modal-zone').classList.add('open');
+  }
+
+  function mzGoTo(i) {
+    if (!mzImages.length) return;
+    mzIndex = (i + mzImages.length) % mzImages.length;
+    document.getElementById('mz-main-img').src = mzImages[mzIndex];
+    document.querySelectorAll('.mz-thumb').forEach((t, j) => {
+      t.classList.toggle('active', j === mzIndex);
+    });
+  }
+
+  function mzMove(dir) { mzGoTo(mzIndex + dir); }
+
+  // ─── PHOTOS SENSIBLES ───
+  const SENSIBLES_IMAGES = [
+    'SENSIBLES/1.jpg','SENSIBLES/2.jpg','SENSIBLES/3.jpg','SENSIBLES/4.jpg','SENSIBLES/5.jpg',
+    'SENSIBLES/6.jpg','SENSIBLES/7.jpg','SENSIBLES/8.jpg','SENSIBLES/9.jpg','SENSIBLES/10.jpg',
+    'SENSIBLES/11.jpg','SENSIBLES/12.jpg','SENSIBLES/13.jpg','SENSIBLES/14.jpg','SENSIBLES/15.jpg',
+    'SENSIBLES/16.jpg','SENSIBLES/17.jpg','SENSIBLES/18.jpg','SENSIBLES/19.jpg','SENSIBLES/20.jpg',
+    'SENSIBLES/21.jpg','SENSIBLES/22.jpg','SENSIBLES/23.jpg','SENSIBLES/24.jpg','SENSIBLES/25.jpg',
+    'SENSIBLES/26.jpg','SENSIBLES/27.jpg','SENSIBLES/28.jpg','SENSIBLES/29.jpg','SENSIBLES/30.jpg',
+    'SENSIBLES/31.jpg','SENSIBLES/32.jpg','SENSIBLES/33.jpg','SENSIBLES/34.jpg','SENSIBLES/35.jpg',
+    'SENSIBLES/36.jpg','SENSIBLES/37.jpg','SENSIBLES/38.jpg','SENSIBLES/39.jpg',
+  ];
+
+  function initSensibles() {
+    const nav = document.getElementById('sensibles-nav');
+    const wrapper = document.getElementById('sensibles-wrapper');
+    if (!SENSIBLES_IMAGES.length) return;
+
+    nav.innerHTML = '';
+    wrapper.innerHTML = '';
+
+    SENSIBLES_IMAGES.forEach((src, i) => {
+      const tab = document.createElement('div');
+      tab.className = 'floor-tab' + (i === 0 ? ' active' : '');
+      tab.textContent = 'Photo ' + (i + 1);
+      tab.onclick = () => showSensible(i, tab);
+      nav.appendChild(tab);
+
+      const wrapper_div = document.createElement('div');
+      wrapper_div.className = 'plan-wrapper' + (i === 0 ? ' active' : '');
+      wrapper_div.id = 'sensible-' + i;
+      wrapper_div.innerHTML = `
+        <div class="plan-container">
+          <div class="plan-header">
+            <span class="plan-floor-label">Photo ${i + 1}</span>
+            <span class="plan-legend">Détails architecturaux & éléments remarquables</span>
+          </div>
+          <div class="plan-canvas">
+            <div class="plan-img-wrapper">
+              <img src="${src}" class="plan-image sensible-fit" alt="Photo sensible ${i + 1}">
+            </div>
+            ${i > 0 ? `<div class="plan-nav plan-nav-left" onclick="showSensible(${i-1}, document.querySelectorAll('#sensibles-nav .floor-tab')[${i-1}])"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M8 2L4 6l4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg></div>` : ''}
+            ${i < SENSIBLES_IMAGES.length - 1 ? `<div class="plan-nav plan-nav-right" onclick="showSensible(${i+1}, document.querySelectorAll('#sensibles-nav .floor-tab')[${i+1}])"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="#1a1a18" stroke-width="1.5" fill="none"/></svg></div>` : ''}
+          </div>
+        </div>
+      `;
+      wrapper.appendChild(wrapper_div);
+    });
+  }
+
+  function showSensible(index, tab) {
+    document.querySelectorAll('#sensibles-nav .floor-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#sensibles-wrapper .plan-wrapper').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('sensible-' + index).classList.add('active');
+  }
+
+  document.addEventListener('DOMContentLoaded', initSensibles);
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+
+  // Escape closes modals (gallery has its own handler above)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+  });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
